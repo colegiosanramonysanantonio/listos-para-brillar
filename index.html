@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cepillos App - Control de Higiene Dental</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Fredoka+One&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4a90e2">
+<link rel="apple-touch-icon" href="img/pwa_icon.png">
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registrado:', reg.scope))
+                .catch(err => console.log('Service Worker error:', err));
+        });
+    }
+</script>
+</head>
+
+<body>
+    <div class="bg-wrapper">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Wrapper para tarjeta -->
+    <div class="app-wrapper">
+        <div id="app" class="container">
+            <!-- Dashboard de Logros (Oculto en selección) -->
+            <div id="achievements-bar" class="achievements-bar hidden">
+                <span>Hoy:</span>
+                <span class="medal bronze">🥉</span>
+                <span class="medal silver">🥈</span>
+                <span class="medal gold">🥇</span>
+            </div>
+
+            <div class="app-header-left">
+                <button id="btn-lang-toggle">🇬🇧 EN</button>
+            </div>
+            <div class="app-header-right">
+                <button id="btn-admin-access" class="btn-icon">⚙️</button>
+            </div>
+
+            <!-- Pantalla de Bienvenida/Selección -->
+            <section id="selection-screen" class="screen">
+                <header>
+                    <div class="header-icons">
+                        <img src="img/cropped-colegio-san-ramon-y-san-antonio-logo (2).png" alt="Escudo del Colegio"
+                            class="school-logo">
+                        <img src="img/image_34.png.png" alt="Mascota Diente" class="mascot-inline">
+                    </div>
+                    <h1>¡Listos para brillar! ✨</h1>
+                    <p>Elige tu curso para empezar</p>
+                </header>
+
+                <div class="selection-grid">
+                    <div class="form-group" id="fg-curso">
+                        <label>🏫 Curso</label>
+                        <select id="select-curso">
+                            <option value="">Selecciona curso...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden-cascade" id="fg-grupo">
+                        <label>👥 Grupo</label>
+                        <select id="select-grupo" disabled>
+                            <option value="">Selecciona grupo...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group hidden-cascade" id="fg-alumno">
+                        <label>👤 ¿Quién eres?</label>
+                        <select id="select-alumno" disabled>
+                            <option value="">Busca tu nombre...</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-next" class="btn btn-main btn-pulse hidden" disabled>
+                        Siguiente 👉
+                    </button>
+
+                    <button id="btn-show-race" class="btn btn-glass-gold">
+                        Ver Carrera 🏆
+                    </button>
+                </div>
+
+                <!-- PANEL DE PRUEBAS SECRETO -->
+                <div id="test-panel" class="test-panel hidden">
+                    <p>🧪 MODO PRUEBA (SOLO PARA TI):</p>
+                    <div class="test-buttons">
+                        <button onclick="debugSetStreak(1)">Nivel 1</button>
+                        <button onclick="debugSetStreak(5)">Nivel 2</button>
+                        <button onclick="debugSetStreak(12)">Nivel 3</button>
+                        <button onclick="localStorage.clear(); location.reload();">Reiniciar Todo</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pantalla de Acción -->
+            <section id="action-screen" class="screen hidden">
+                <header>
+                    <h2 id="greeting-name">¿Hoy te has lavado los dientes?</h2>
+                </header>
+                <div class="action-buttons grid-2">
+                    <button id="btn-yes" class="btn btn-action btn-success">
+                        <span class="icon">✅</span>
+                        <span class="text">¡Hecho!</span>
+                    </button>
+                    <button id="btn-no" class="btn btn-action btn-danger">
+                        <span class="icon">❌</span>
+                        <span class="text">Aún no...</span>
+                    </button>
+                </div>
+                <button id="btn-back" class="btn btn-link">⬅️ Volver atrás</button>
+            </section>
+
+            <!-- Pantalla de Éxito con Sistema de Racha -->
+            <section id="success-screen" class="screen hidden">
+                <div class="streak-celebration">
+                    <!-- Muela de Fuego (cambia según nivel) -->
+                    <img id="streak-muela" src="img/Muela de fuego-nivel 1.svg" alt="Muela de Fuego"
+                        class="streak-muela">
+
+                    <!-- Contador de días -->
+                    <div class="streak-counter">
+                        <span id="streak-days">1</span>
+                        <span id="streak-label" class="streak-label">días</span>
+                    </div>
+
+                    <!-- Mensaje motivador -->
+                    <p id="streak-message" class="streak-message">¡Buen comienzo!</p>
+
+                    <!-- Countdown -->
+                    <p id="countdown-text" class="countdown-text">Volviendo al inicio en 5 segundos...</p>
+                </div>
+            </section>
+
+            <!-- Pantalla de La Gran Carrera -->
+            <section id="race-screen" class="screen hidden">
+                <header>
+                    <h1>🏆 La Gran Carrera</h1>
+                    <p>¿Qué curso llegará primero a la meta?</p>
+                </header>
+                <div id="race-container" class="race-list">
+                    <!-- Las barras se cargarán dinámicamente -->
+                    <div class="loading-race">Calculando posiciones... 🏎️💨</div>
+                </div>
+                <button id="btn-race-back" class="btn btn-main">Volver al Registro</button>
+            </section>
+
+            <!-- Pantalla de Administración -->
+            <section id="admin-screen" class="screen hidden">
+                <header>
+                    <h2>Panel Profe ⚙️</h2>
+                </header>
+
+                <div id="admin-main-menu" class="admin-menu">
+                    <button id="btn-admin-reset" class="btn btn-admin-option btn-danger-soft">
+                        <span class="icon">🔄</span>
+                        <span class="text">Reiniciar Carrera</span>
+                    </button>
+                    <button id="btn-admin-back" class="btn btn-link">
+                        ⬅️ Salir del Panel
+                    </button>
+                </div>
+
+                <div id="admin-content" class="admin-content hidden">
+                    <!-- Contenido dinámico para confirmación de reset -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="guardian.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
