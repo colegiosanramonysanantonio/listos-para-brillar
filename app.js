@@ -1,9 +1,10 @@
 ﻿/**
- * App "Cepillos" - Frontend Logic (Reconstructed for index.html structure)
+ * App "Cepillos" - Frontend Logic (Fixed Reset & Optimistic UI)
  */
 
 const CONFIG = {
     API_URL: 'https://script.google.com/macros/s/AKfycbyuZlGw3PGWyPgqjUWXGyXb95gCdyECtoNw5ECYSCmjP7WiAs-pqCbaDV2FvKH-i6Rt/exec',
+    RACE_URL: 'https://docs.google.com/spreadsheets/d/1Z_u8zXn2wT3q5PgL4I0nOqJ0pZ6dK2yG/edit?usp=sharing',
     OFFLINE_KEY: 'cepillos_offline_records',
     STUDENTS_CACHE_KEY: 'cepillos_students_cache',
     STREAK_KEY: 'cepillos_streaks',
@@ -17,13 +18,14 @@ const TRANSLATIONS = {
         select_group: 'Selecciona grupo...',
         select_student: 'Busca tu nombre...',
         btn_next: 'Siguiente 👉',
-        greeting: '¡Hola, {0}!',
         question: '¿Hoy te has lavado los dientes?',
         streak_days: 'días',
         success_title: '¡Genial!',
         offline_mode: 'Modo sin conexión 📡',
         connection_restored: 'Conexión recuperada 📡',
-        sending: 'Enviando...'
+        sending: 'Enviando...',
+        btn_race: 'Ver Carrera 🏆',
+        btn_admin_back: '⬅️ Salir del Panel'
     },
     en: {
         loading: 'Loading...',
@@ -31,13 +33,14 @@ const TRANSLATIONS = {
         select_group: 'Select class...',
         select_student: 'Find your name...',
         btn_next: 'Next 👉',
-        greeting: 'Hello, {0}!',
         question: 'Did you brush your teeth today?',
         streak_days: 'days',
         success_title: 'Awesome!',
         offline_mode: 'Offline mode 📡',
         connection_restored: 'Connection restored 📡',
-        sending: 'Sending...'
+        sending: 'Sending...',
+        btn_race: 'See Race 🏆',
+        btn_admin_back: '⬅️ Exit Panel'
     }
 };
 
@@ -82,7 +85,7 @@ const DOM = {
 };
 
 function initApp() {
-    console.log('Initializing App...');
+    console.log('Initializing App v5...');
     loadStudentData();
     setupEventListeners();
     updateLanguage();
@@ -136,6 +139,7 @@ function setupEventListeners() {
     DOM.inputs.curso.addEventListener('change', e => {
         playSound('pop');
         const curso = e.target.value;
+        // Reset sub-selects
         DOM.inputs.grupo.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_group}</option>`;
         DOM.inputs.alumno.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_student}</option>`;
         DOM.inputs.grupo.disabled = true;
@@ -143,9 +147,15 @@ function setupEventListeners() {
         DOM.buttons.next.classList.add('hidden');
         DOM.buttons.next.disabled = true;
 
+        // Hide cascades (Safety reset)
+        DOM.inputs.fgGrupo.classList.add('hidden-cascade');
+        DOM.inputs.fgAlumno.classList.add('hidden-cascade');
+
         if (curso && studentData[curso]) {
             DOM.inputs.grupo.disabled = false;
+            // Use requestAnimationFrame to ensure CSS transition can happen if we added animation
             DOM.inputs.fgGrupo.classList.remove('hidden-cascade');
+            DOM.inputs.fgGrupo.classList.add('visible-cascade'); // Add explicit visible class for animation
 
             const grupos = studentData[curso];
             Object.keys(grupos).forEach(grupo => {
@@ -171,10 +181,12 @@ function setupEventListeners() {
         DOM.inputs.alumno.disabled = true;
         DOM.buttons.next.classList.add('hidden');
         DOM.buttons.next.disabled = true;
+        DOM.inputs.fgAlumno.classList.add('hidden-cascade');
 
         if (curso && grupo && studentData[curso][grupo]) {
             DOM.inputs.alumno.disabled = false;
             DOM.inputs.fgAlumno.classList.remove('hidden-cascade');
+            DOM.inputs.fgAlumno.classList.add('visible-cascade');
 
             studentData[curso][grupo].sort().forEach(alumno => {
                 const opt = document.createElement('option');
@@ -194,7 +206,6 @@ function setupEventListeners() {
         if (selectedStudent.nombre) {
             DOM.buttons.next.classList.remove('hidden');
             DOM.buttons.next.disabled = false;
-            // Animation/Effect could go here
         } else {
             DOM.buttons.next.classList.add('hidden');
             DOM.buttons.next.disabled = true;
@@ -205,8 +216,10 @@ function setupEventListeners() {
     DOM.buttons.next.addEventListener('click', () => {
         playSound('bubble');
         showScreen('action');
-        const greeting = TRANSLATIONS[currentLang].greeting.replace('{0}', selectedStudent.nombre.split(' ')[0]);
-        DOM.text.greeting.textContent = greeting;
+        const firstName = selectedStudent.nombre.split(' ')[0];
+        // Use translation logic or direct string
+        const baseTitle = currentLang === 'es' ? `¡Hola, ${firstName}!` : `Hello, ${firstName}!`;
+        DOM.text.greeting.textContent = baseTitle;
     });
 
     DOM.buttons.back.addEventListener('click', () => {
@@ -216,8 +229,12 @@ function setupEventListeners() {
 
     DOM.buttons.race.addEventListener('click', () => {
         playSound('bubble');
-        window.open('https://docs.google.com/spreadsheets/d/1Z_u8zXn2wT3q5PgL4I0nOqJ0pZ6dK2yG/edit?usp=sharing', '_blank');
-        // Alternative: showScreen('race'); if race logic was implemented locally
+        // Validate URL before opening
+        if (CONFIG.RACE_URL) {
+            window.open(CONFIG.RACE_URL, '_blank');
+        } else {
+            alert('Enlace de carrera no configurado');
+        }
     });
 
     DOM.buttons.raceBack.addEventListener('click', () => {
@@ -242,23 +259,29 @@ function setupEventListeners() {
 
     DOM.buttons.adminClose.addEventListener('click', () => showScreen('selection'));
 
-    // Admin Reset (Simple version)
+    // Admin Reset
     DOM.buttons.adminReset.addEventListener('click', async () => {
-        if (confirm('¿Reiniciar todo?')) {
-            await fetch(CONFIG.API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'resetCompetition' })
-            });
-            alert('Reset done');
-            location.reload();
+        const confirmMsg = currentLang === 'es' ? '¿Seguro que quieres borrar TODO? escribe RESET' : 'Sure to delete ALL? type RESET';
+        const pin = prompt(confirmMsg);
+        if (pin === 'RESET') {
+            try {
+                showToast('Reiniciando...', 'info');
+                await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'resetCompetition' })
+                });
+                alert('Competición reiniciada / Competition reset');
+                location.reload();
+            } catch (e) {
+                alert('Error: ' + e);
+            }
         }
     });
 }
 
-async function handleRegister(estado) {
+function handleRegister(estado) {
     if (DOM.buttons.yes.disabled) return;
 
-    // Disable buttons to prevent double click
     DOM.buttons.yes.disabled = true;
     DOM.buttons.no.disabled = true;
 
@@ -277,46 +300,55 @@ async function handleRegister(estado) {
         estado: estado
     };
 
-    // Calculate Streak (Simulated/Local)
+    // Calculate Streak Immediately
     const currentStreak = calculateStreak(record.curso, record.grupo, record.alumno, estado === 'Sí');
 
-    // Attempt Send
-    if (navigator.onLine) {
-        try {
-            await fetch(CONFIG.API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(record)
-            });
-        } catch (e) {
-            console.warn('Offline save', e);
-            saveOffline(record);
-        }
-    } else {
-        saveOffline(record);
-    }
-
+    // ---------------------------------------------------------
+    // OPTIMISTIC UI: Show success/redirect immediately
+    // ---------------------------------------------------------
     if (estado === 'Sí') {
         showSuccessScreen(currentStreak);
     } else {
-        // Just go back after a "No" or show a message?
-        // Default behavior: go back to start
-        alert(currentLang === 'es' ? '¡Ánimo para la próxima!' : 'Next time!');
-        resetApp();
+        setTimeout(() => {
+            resetApp();
+            showToast(currentLang === 'es' ? '¡Ánimo para mañana!' : 'See you tomorrow!', 'info');
+        }, 500);
     }
+
+    // Send in Background
+    const sendData = async () => {
+        if (navigator.onLine) {
+            try {
+                // We don't await this for the UI update, but we do catch errors
+                await fetch(CONFIG.API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(record)
+                });
+                console.log('Record sent successfully');
+            } catch (e) {
+                console.warn('Send failed, saving offline', e);
+                saveOffline(record);
+            }
+        } else {
+            saveOffline(record);
+        }
+    };
+
+    sendData(); // Fire and forget (sort of)
 }
 
 function showSuccessScreen(streak) {
     showScreen('success');
     DOM.text.streakDays.textContent = streak;
+    DOM.text.streakLabel.textContent = TRANSLATIONS[currentLang].streak_days;
 
-    // Update Muela Image based on streak
+    // Message based on streak
+    DOM.text.streakMessage.textContent = getRandomMessage(streak);
+
     let level = 1;
     if (streak >= 4) level = 2;
     if (streak >= 11) level = 3;
-
-    // Map level to image filename if needed, or just text/emoji
-    // Assuming images exist: 'img/Muela de fuego-nivel 1.svg'
     DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
     // Countdown
@@ -324,7 +356,10 @@ function showSuccessScreen(streak) {
     const countdownEl = document.getElementById('countdown-text');
     const interval = setInterval(() => {
         seconds--;
-        countdownEl.textContent = `Volviendo en ${seconds}...`;
+        countdownEl.textContent = currentLang === 'es'
+            ? `Volviendo en ${seconds}...`
+            : `Returning in ${seconds}...`;
+
         if (seconds <= 0) {
             clearInterval(interval);
             resetApp();
@@ -333,19 +368,34 @@ function showSuccessScreen(streak) {
 }
 
 function showScreen(screenName) {
-    Object.values(DOM.screens).forEach(el => el.classList.add('hidden'));
-    DOM.screens[screenName].classList.remove('hidden');
+    Object.values(DOM.screens).forEach(el => {
+        if (el) el.classList.add('hidden');
+    });
+    if (DOM.screens[screenName]) DOM.screens[screenName].classList.remove('hidden');
 }
 
 function resetApp() {
-    DOM.inputs.grupo.innerHTML = '<option value="">...</option>';
-    DOM.inputs.alumno.innerHTML = '<option value="">...</option>';
+    // Reset Data
+    selectedStudent = { curso: '', grupo: '', nombre: '' };
+
+    // Reset Inputs
     DOM.inputs.curso.value = "";
+    DOM.inputs.grupo.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_group}</option>`;
+    DOM.inputs.alumno.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_student}</option>`;
     DOM.inputs.grupo.disabled = true;
     DOM.inputs.alumno.disabled = true;
+
+    // Reset Visibility (FIX for User Issue #1)
+    DOM.inputs.fgGrupo.classList.add('hidden-cascade');
+    DOM.inputs.fgGrupo.classList.remove('visible-cascade');
+    DOM.inputs.fgAlumno.classList.add('hidden-cascade');
+    DOM.inputs.fgAlumno.classList.remove('visible-cascade');
+
+    // Reset Buttons
     DOM.buttons.next.classList.add('hidden');
     DOM.buttons.yes.disabled = false;
     DOM.buttons.no.disabled = false;
+
     showScreen('selection');
 }
 
@@ -357,6 +407,7 @@ function calculateStreak(curso, grupo, alumno, increment) {
 
     if (increment) {
         const today = new Date().toDateString();
+        // Simple daily check
         if (data.lastDate !== today) {
             data.count++;
             data.lastDate = today;
@@ -378,7 +429,7 @@ async function syncOfflineRecords() {
     const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
     if (records.length === 0) return;
 
-    showToast(`Syncing ${records.length} records...`);
+    showToast(currentLang === 'es' ? `Sincronizando ${records.length}...` : `Syncing...`);
     const failed = [];
     for (const record of records) {
         try {
@@ -392,18 +443,41 @@ async function syncOfflineRecords() {
         }
     }
     localStorage.setItem(CONFIG.OFFLINE_KEY, JSON.stringify(failed));
-    if (failed.length === 0) showToast('Sync Complete!', 'success');
+    if (failed.length === 0) showToast(TRANSLATIONS[currentLang].connection_restored, 'success');
 }
 
 function updateLanguage() {
     const t = TRANSLATIONS[currentLang];
     DOM.buttons.lang.textContent = currentLang === 'es' ? '🇬🇧 EN' : '🇪🇸 ES';
-    if (DOM.text.greeting) DOM.text.greeting.textContent = t.question;
-    // Update other static texts if needed
+
+    // Update Static UI
+    DOM.buttons.race.innerHTML = t.btn_race;
+    DOM.buttons.adminClose.innerHTML = t.btn_admin_back;
+    DOM.buttons.next.innerHTML = t.btn_next;
+
+    // Update Select Placeholders (only if they are currently selected/empty)
+    if (DOM.inputs.curso.value === "") DOM.inputs.curso.options[0].text = t.select_course;
+    if (DOM.inputs.grupo.value === "") DOM.inputs.grupo.options[0].text = t.select_group;
+    if (DOM.inputs.alumno.value === "") DOM.inputs.alumno.options[0].text = t.select_student;
+
+    // Update Question text
+    const greetingEl = document.querySelector('#action-screen h2');
+    if (greetingEl && selectedStudent.nombre) {
+        // Re-render greeting with new lang
+        const firstName = selectedStudent.nombre.split(' ')[0];
+        greetingEl.textContent = currentLang === 'es' ? `¡Hola, ${firstName}!` : `Hello, ${firstName}!`;
+    }
+}
+
+function getRandomMessage(streak) {
+    // Simple motivators
+    const es = ['¡Sigue así!', '¡Eres un crack!', '¡Dientes limpios!', '¡Brillante!'];
+    const en = ['Keep it up!', 'You rock!', 'Clean teeth!', 'Shining!'];
+    const list = currentLang === 'es' ? es : en;
+    return list[Math.floor(Math.random() * list.length)];
 }
 
 function showToast(msg, type) {
-    // Simple toast
     let t = document.getElementById('app-toast');
     if (!t) {
         t = document.createElement('div');
@@ -413,7 +487,10 @@ function showToast(msg, type) {
     }
     t.textContent = msg;
     t.className = 'toast visible';
-    setTimeout(() => t.className = 'toast', 3000);
+    if (type) t.classList.add(type);
+    setTimeout(() => {
+        t.className = 'toast';
+    }, 3000);
 }
 
 // Audio
@@ -461,6 +538,7 @@ const confettiEffect = () => {
         p.style.height = '8px';
         p.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
         p.style.transition = 'top 1s ease-in, transform 1s linear';
+        p.style.zIndex = '9999';
         document.body.appendChild(p);
         setTimeout(() => {
             p.style.top = '110vh';
