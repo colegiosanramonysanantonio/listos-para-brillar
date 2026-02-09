@@ -1,4 +1,4 @@
-/**
+﻿/**
  * App "Cepillos" - Frontend Logic
  */
 
@@ -16,157 +16,448 @@ const TRANSLATIONS = {
     es: {
         title: '¡Listos para brillar! ✨',
         subtitle: 'Elige tu curso para empezar',
-        course: '🏫 Curso',
-        group: '👥 Grupo',
-        who: '👤 ¿Quién eres?',
-        selectCourse: 'Selecciona curso...',
-        selectGroup: 'Selecciona grupo...',
-        searchName: 'Busca tu nombre...',
-        next: 'Siguiente 👉',
-        viewRace: 'Ver Carrera 🏆',
-        question: '¿Hoy te has lavado los dientes,',
-        done: '¡Hecho!',
-        notYet: 'Aún no...',
-        back: '⬅️ Volver atrás',
-        raceTitle: '🏆 La Gran Carrera',
-        raceSubtitle: '¿Qué curso llegará primero a la meta?',
-        backToReg: 'Volver al Registro',
-        countdown: 'Volviendo al inicio en {n} segundos...',
+        course: 'Curso',
+        group: 'Clase',
+        student: 'Alumno',
+        btn_register: '¡Hecho! 🦷',
+        btn_race: 'Ver Carrera 🏆',
+        sending: 'Enviando...',
+        success: '¡Registro guardado!',
+        offline_stored: 'Guardado (sin conexión) 📡',
+        select_default: 'Selecciona...',
+        streak_label: 'Racha actual',
+        days: 'días',
         successMessages: [
-            'Brillas como una estrella ⭐',
-            'Hoy iluminas la clase 💡',
-            'Sonrisa de campeón 🏆',
-            'Estás que reluces ✨',
-            'Has encendido tu sonrisa 🔆',
-            'Dientes limpios, sonrisa feliz 😁🦷',
-            'Misión dientes limpios: superada ✅🎯'
+            '¡Genial! Tus dientes brillan ✨',
+            '¡Misión cumplida! Dientes limpios 🦷',
+            '¡Superhéroe de la sonrisa! 🦸‍♂️',
+            '¡Fantástico trabajo! 🌟'
+        ],
+        level1: [
+            '¡Buena racha! Sigue así 🌊',
+            '¡Dientes limpios, pez feliz! 🐠',
+            '¡Estás cuidando tu sonrisa! 🦷',
+            '¡Brilla como una perla! ✨'
+        ],
+        level2: [
+            '¡Racha imparable! Eres un tiburón 🦈',
+            '¡Wow! Tu sonrisa ilumina el océano 🌊',
+            '¡Experto en cepillo! Sigue nadando 🏊‍♂️',
+            '¡Casi un guardián del arrecife! 🛡️'
+        ],
+        level3: [
+            '¡Nivel Capitán desbloqueado! La sonrisa más brillante ⚓',
+            '¡Un verdadero Guardián del Arrecife! 🧜‍♂️',
+            '¡Leyenda del cepillo! Eres invencible 🔱',
+            '¡Increíble! Tu corona de fuego ilumina el mar 🔥'
         ]
     },
     en: {
         title: 'Ready to Shine! ✨',
         subtitle: 'Choose your grade to start',
-        course: '🏫 Grade',
-        group: '👥 Group',
-        who: '👤 Who are you?',
-        selectCourse: 'Select grade...',
-        selectGroup: 'Select group...',
-        searchName: 'Find your name...',
-        next: 'Next 👉',
-        viewRace: 'View Race 🏆',
-        question: 'Did you brush your teeth today,',
-        done: 'Done!',
-        notYet: 'Not yet...',
-        back: '⬅️ Go Back',
-        raceTitle: '🏆 The Great Race',
-        raceSubtitle: 'Which grade will reach the finish line first?',
-        backToReg: 'Back to Register',
-        countdown: 'Returning home in {n} seconds...',
+        course: 'Grade',
+        group: 'Class',
+        student: 'Student',
+        btn_register: 'Done! 🦷',
+        btn_race: 'See Race 🏆',
+        sending: 'Sending...',
+        success: 'Saved!',
+        offline_stored: 'Stored (offline) 📡',
+        select_default: 'Select...',
+        streak_label: 'Current Streak',
+        days: 'days',
         successMessages: [
-            'You shine like a star ⭐',
-            'You brighten up the class 💡',
-            'Champion smile 🏆',
-            'You are glowing ✨',
-            'You lit up your smile 🔆',
-            'Clean teeth, happy smile 😁🦷',
-            'Clean teeth mission: complete ✅🎯'
-        ]
-    }
-};
-
-// Mensajes de racha por nivel
-const STREAK_MESSAGES = {
-    es: {
+            'Awesome! Your teeth are sparkling ✨',
+            'Mission accomplished! Clean teeth 🦷',
+            'Smile Superhero! 🦸‍♂️',
+            'Fantastic job! 🌟'
+        ],
         level1: [
-            '¡Buen comienzo! Estás dando el primer paso hacia una sonrisa de estrella ⭐',
-            '¡Primeros días superados! El arrecife ya empieza a brillar gracias a ti 🪸',
-            '¡Pequeño gran paso! Pronto serás un auténtico experto 🌟',
-            '¡Calentamiento completado! Tu muela de fuego acaba de encenderse 🔥'
+            'Good streak! Keep it up 🌊',
+            'Clean teeth, happy fish! 🐠',
+            'You are caring for your smile! 🦷',
+            'Shine like a pearl! ✨'
         ],
         level2: [
-            '¡Eres constante como las mareas! Tus dientes ya brillan como perlas 💎',
-            '¡Qué energía! Se nota que te tomas en serio la protección de tu arrecife dental 🐠',
-            '¡Imparable! Estás entrenando tu sonrisa igual que entrenas en EF 💪',
-            '¡Cuidado! Tu muela está empezando a soltar chispas de pura limpieza ✨'
+            'Unstoppable streak! You are a shark 🦈',
+            'Wow! Your smile lights up the ocean 🌊',
+            'Brush expert! Keep swimming 🏊‍♂️',
+            'Almost a Reef Guardian! 🛡️'
         ],
         level3: [
-            '¡Nivel Capitán desbloqueado! Tienes la sonrisa más brillante de todo el colegio 👑',
-            '¡Eres un auténtico Guardián del Arrecife! Nada puede con tu constancia 🛡️',
-            '¡Leyenda del cepillado! Tienes la disciplina de un gran campeón 🏆',
-            '¡Increíble! Tu corona de fuego ilumina hasta el rincón más oscuro del mar 🌊'
-        ]
-    },
-    en: {
-        level1: [
-            'Great start! You are taking the first step towards a star smile ⭐',
-            'First days done! The reef is starting to shine thanks to you 🪸',
-            'Small big step! Soon you will be a true expert 🌟',
-            'Warm-up complete! Your fire tooth just lit up 🔥'
-        ],
-        level2: [
-            'You are steady like the tides! Your teeth shine like pearls 💎',
-            'Such energy! You really care about your dental reef 🐠',
-            'Unstoppable! Training your smile like you train in PE 💪',
-            'Watch out! Your tooth is sparking with pure cleanliness ✨'
-        ],
-        level3: [
-            'Captain level unlocked! The brightest smile in school 👑',
-            'A true Reef Guardian! Nothing can beat your consistency 🛡️',
-            'Brushing legend! Champion-level discipline 🏆',
-            'Amazing! Your fire crown lights up the darkest corner of the sea 🌊'
+            'Captain level unlocked! The brightest smile in school ⚓',
+            'A true Reef Guardian! Nothing can beat your consistency 🧜‍♂️',
+            'Brushing legend! Champion-level discipline 🔱',
+            'Amazing! Your fire crown lights up the darkest corner of the sea 🔥'
         ]
     }
 };
 
 let currentLang = 'es';
 
-function t(key) {
-    return TRANSLATIONS[currentLang][key] || key;
+// Referencias del DOM
+const DOM_ELEMENTS = {
+    title: document.getElementById('app-title'),
+    subtitle: document.getElementById('app-subtitle'),
+    cursoLabel: document.getElementById('label-curso'),
+    grupoLabel: document.getElementById('label-grupo'),
+    alumnoLabel: document.getElementById('label-alumno'),
+    cursoSelect: document.getElementById('cursoSelect'),
+    grupoSelect: document.getElementById('grupoSelect'),
+    alumnoSelect: document.getElementById('alumnoSelect'),
+    registerBtn: document.getElementById('registerBtn'),
+    raceBtn: document.getElementById('raceBtn'),
+    langBtn: document.getElementById('langBtn'),
+    adminBtn: document.getElementById('adminBtn'),
+    streakContainer: document.getElementById('streak-container'),
+    streakCount: document.getElementById('streak-count'),
+    streakMessage: document.getElementById('streak-message'),
+    streakIcon: document.getElementById('streak-icon'),
+    mascot: document.querySelector('.mascot')
+};
+
+// Inicialización
+function initApp() {
+    loadStudentData();
+    setupEventListeners();
+    updateLanguage();
+    syncOfflineRecords(); // Intentar sincronizar al abrir
+    
+    // Easter Egg: Toque en la mascota
+    if (DOM_ELEMENTS.mascot) {
+        DOM_ELEMENTS.mascot.addEventListener('click', () => {
+            playSound('bubble');
+            DOM_ELEMENTS.mascot.style.transform = 'scale(1.1) rotate(10deg)';
+            setTimeout(() => DOM_ELEMENTS.mascot.style.transform = 'translateY(0)', 200);
+        });
+    }
 }
 
-function getRandomSuccessMessage() {
-    const msgs = TRANSLATIONS[currentLang].successMessages;
-    return msgs[Math.floor(Math.random() * msgs.length)];
+// Cargar Datos (FIXED ERROR HANDLING)
+async function loadStudentData() {
+    try {
+        const loadingOption = document.createElement('option');
+        loadingOption.text = "Cargando...";
+        DOM_ELEMENTS.cursoSelect.add(loadingOption);
+        
+        console.log('Fetching data from:', CONFIG.API_URL);
+        const response = await fetch(CONFIG.API_URL);
+        
+        if (!response.ok) {
+            throw new Error(`Error de red: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Data received:', data);
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        DOM_ELEMENTS.cursoSelect.innerHTML = '<option value="">Selecciona curso...</option>';
+        
+        Object.keys(data).forEach(curso => {
+            const option = document.createElement('option');
+            option.value = curso;
+            option.text = curso;
+            DOM_ELEMENTS.cursoSelect.add(option);
+        });
+
+        localStorage.setItem(CONFIG.STUDENTS_CACHE_KEY, JSON.stringify(data));
+        window.studentData = data;
+
+    } catch (error) {
+        console.error('Error loading student data:', error);
+        
+        // Cache fallback
+        const cachedData = localStorage.getItem(CONFIG.STUDENTS_CACHE_KEY);
+        if (cachedData) {
+            window.studentData = JSON.parse(cachedData);
+            DOM_ELEMENTS.cursoSelect.innerHTML = '<option value="">Selecciona curso (Offline)...</option>';
+            Object.keys(window.studentData).forEach(curso => {
+                const option = document.createElement('option');
+                option.value = curso;
+                option.text = curso;
+                DOM_ELEMENTS.cursoSelect.add(option);
+            });
+            alert('Aviso: Sin conexión. Usando datos guardados.');
+        } else {
+            DOM_ELEMENTS.cursoSelect.innerHTML = '<option value="">Error de conexión ⚠️</option>';
+            alert('No se pudieron cargar los alumnos. Verifica tu conexión a internet y recarga.');
+        }
+    }
 }
 
-// ========== STREAK SYSTEM ==========
-function getStreakKey(curso, grupo, alumno) {
-    return `${curso}_${grupo}_${alumno}`;
+function setupEventListeners() {
+    DOM_ELEMENTS.cursoSelect.addEventListener('change', (e) => {
+        playSound('pop');
+        handleCursoChange(e.target.value);
+    });
+    DOM_ELEMENTS.grupoSelect.addEventListener('change', (e) => {
+        playSound('pop');
+        handleGrupoChange(e.target.value);
+    });
+    DOM_ELEMENTS.alumnoSelect.addEventListener('change', (e) => {
+        playSound('pop');
+        handleAlumnoChange(e.target.value);
+    });
+
+    DOM_ELEMENTS.registerBtn.addEventListener('click', handleRegister);
+    
+    // Botón de Carrera: Abre el enlace del Dashboard (Google Sheets o Data Studio)
+    DOM_ELEMENTS.raceBtn.addEventListener('click', () => {
+        playSound('bubble');
+        // Reemplazar con el enlace público de tu Dashboard/Carrera
+        window.open('https://docs.google.com/spreadsheets/d/1Z_u8zXn2wT3q5PgL4I0nOqJ0pZ6dK2yG/edit?usp=sharing', '_blank');
+    });
+
+    DOM_ELEMENTS.langBtn.addEventListener('click', () => {
+        playSound('pop');
+        currentLang = currentLang === 'es' ? 'en' : 'es';
+        updateLanguage();
+    });
+
+    DOM_ELEMENTS.adminBtn.addEventListener('click', () => {
+        const pin = prompt('PIN de Administrador:');
+        if (pin === CONFIG.ADMIN_PIN) {
+            showAdminPanel();
+        }
+    });
 }
 
-function getStreakData(key) {
-    const streaks = JSON.parse(localStorage.getItem(CONFIG.STREAK_KEY) || '{}');
-    return streaks[key] || { count: 0, lastDate: null };
+function updateLanguage() {
+    const t = TRANSLATIONS[currentLang];
+    DOM_ELEMENTS.title.textContent = t.title;
+    DOM_ELEMENTS.subtitle.textContent = t.subtitle;
+    DOM_ELEMENTS.cursoLabel.textContent = t.course;
+    DOM_ELEMENTS.grupoLabel.textContent = t.group;
+    DOM_ELEMENTS.alumnoLabel.textContent = t.student;
+    DOM_ELEMENTS.registerBtn.textContent = '🦷 ' + t.btn_register;
+    DOM_ELEMENTS.raceBtn.textContent = '🏆 ' + t.btn_race;
+    DOM_ELEMENTS.langBtn.textContent = currentLang === 'es' ? '🇬🇧 EN' : '🇪🇸 ES';
+    
+    // Actualizar placeholders si es necesario
+    if (DOM_ELEMENTS.cursoSelect.options[0]) DOM_ELEMENTS.cursoSelect.options[0].text = t.select_default;
+    if (DOM_ELEMENTS.grupoSelect.options[0]) DOM_ELEMENTS.grupoSelect.options[0].text = t.select_default;
+    if (DOM_ELEMENTS.alumnoSelect.options[0]) DOM_ELEMENTS.alumnoSelect.options[0].text = t.select_default;
 }
 
-function updateStreak(curso, grupo, alumno) {
-    const key = getStreakKey(curso, grupo, alumno);
-    const streaks = JSON.parse(localStorage.getItem(CONFIG.STREAK_KEY) || '{}');
-    const data = streaks[key] || { count: 0, lastDate: null };
+function handleCursoChange(curso) {
+    playAnimation();
+    DOM_ELEMENTS.grupoSelect.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_default}</option>`;
+    DOM_ELEMENTS.alumnoSelect.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_default}</option>`;
+    DOM_ELEMENTS.grupoSelect.disabled = true;
+    DOM_ELEMENTS.alumnoSelect.disabled = true;
+    DOM_ELEMENTS.streakContainer.classList.remove('visible');
 
-    const today = new Date().toDateString();
-    const lastDate = data.lastDate ? new Date(data.lastDate).toDateString() : null;
+    if (!curso || !window.studentData) return;
 
-    if (lastDate === today) {
-        // Mismo día: mantener racha
-        return data.count;
+    const grupos = window.studentData[curso];
+    if (grupos) {
+        DOM_ELEMENTS.grupoSelect.disabled = false;
+        Object.keys(grupos).forEach(grupo => {
+            const option = document.createElement('option');
+            option.value = grupo;
+            option.text = grupo === 'ÚNICO' ? (currentLang === 'es' ? 'Única' : 'Single') : `Clase ${grupo}`;
+            DOM_ELEMENTS.grupoSelect.add(option);
+        });
+        
+        // Auto-seleccionar si solo hay un grupo (ÚNICO)
+        if (Object.keys(grupos).length === 1) {
+            DOM_ELEMENTS.grupoSelect.selectedIndex = 1;
+            handleGrupoChange(Object.keys(grupos)[0]);
+        }
+    }
+}
+
+function handleGrupoChange(grupo) {
+    playAnimation();
+    DOM_ELEMENTS.alumnoSelect.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_default}</option>`;
+    DOM_ELEMENTS.alumnoSelect.disabled = true;
+    DOM_ELEMENTS.streakContainer.classList.remove('visible');
+
+    const curso = DOM_ELEMENTS.cursoSelect.value;
+    if (!curso || !grupo || !window.studentData) return;
+
+    const alumnos = window.studentData[curso][grupo];
+    if (alumnos) {
+        DOM_ELEMENTS.alumnoSelect.disabled = false;
+        alumnos.sort().forEach(alumno => {
+            const option = document.createElement('option');
+            option.value = alumno;
+            option.text = alumno;
+            DOM_ELEMENTS.alumnoSelect.add(option);
+        });
+    }
+}
+
+function handleAlumnoChange(alumno) {
+    if (!alumno) {
+        DOM_ELEMENTS.streakContainer.classList.remove('visible');
+        return;
+    }
+    
+    // Mostrar racha actual (simulada o guardada localmente) de forma optimista
+    // En una versión completa, esto vendría del backend
+    const curso = DOM_ELEMENTS.cursoSelect.value;
+    const grupo = DOM_ELEMENTS.grupoSelect.value;
+    updateStreakDisplay(curso, grupo, alumno);
+}
+
+function playAnimation() {
+    // Pequeña animación de rebote en la mascota
+    if (DOM_ELEMENTS.mascot) {
+        DOM_ELEMENTS.mascot.classList.remove('bounce');
+        void DOM_ELEMENTS.mascot.offsetWidth; // Trigger reflow
+        DOM_ELEMENTS.mascot.classList.add('bounce');
+    }
+}
+
+async function handleRegister() {
+    const curso = DOM_ELEMENTS.cursoSelect.value;
+    const grupo = DOM_ELEMENTS.grupoSelect.value;
+    const alumno = DOM_ELEMENTS.alumnoSelect.value;
+
+    if (!curso || !grupo || !alumno) {
+        alert('Por favor, completa todos los campos.');
+        return;
     }
 
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toDateString();
+    playSound('pop');
+    
+    const originalText = DOM_ELEMENTS.registerBtn.textContent;
+    DOM_ELEMENTS.registerBtn.textContent = TRANSLATIONS[currentLang].sending;
+    DOM_ELEMENTS.registerBtn.disabled = true;
 
-    if (lastDate === yesterdayStr) {
-        // Día consecutivo: incrementar
-        data.count = data.count + 1;
+    // Efecto de confeti
+    confettiEffect();
+
+    const record = {
+        fecha: new Date().toISOString(),
+        curso,
+        grupo,
+        alumno,
+        estado: 'Sí'
+    };
+
+    if (navigator.onLine) {
+        try {
+            await enviarRegistro(record);
+            // Actualizar racha local y mostrar
+            const newStreak = calculateStreak(curso, grupo, alumno);
+            updateStreakDisplay(curso, grupo, alumno, newStreak);
+            playSound('bling');
+            showToast(getRandomSuccessMessage(), 'success');
+        } catch (error) {
+            console.error('Error enviando:', error);
+            saveOffline(record);
+            showToast(TRANSLATIONS[currentLang].offline_stored, 'warning');
+        }
     } else {
-        // Más de un día o primera vez: reiniciar a 1
-        data.count = 1;
+        saveOffline(record);
+        showToast(TRANSLATIONS[currentLang].offline_stored, 'warning');
     }
 
-    data.lastDate = new Date().toISOString();
+    // Resetear UI
+    setTimeout(() => {
+        DOM_ELEMENTS.registerBtn.textContent = originalText;
+        DOM_ELEMENTS.registerBtn.disabled = false;
+        DOM_ELEMENTS.alumnoSelect.value = "";
+        DOM_ELEMENTS.streakContainer.classList.remove('visible');
+    }, 2000);
+}
+
+async function enviarRegistro(datos) {
+    const response = await fetch(CONFIG.API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(datos)
+    });
+    
+    const result = await response.json();
+    if (result.status === 'error') {
+        throw new Error(result.message);
+    }
+    return result;
+}
+
+// Sistema Offline
+function saveOffline(record) {
+    const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
+    records.push(record);
+    localStorage.setItem(CONFIG.OFFLINE_KEY, JSON.stringify(records));
+}
+
+async function syncOfflineRecords() {
+    if (!navigator.onLine) return;
+
+    const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
+    if (records.length === 0) return;
+
+    showToast(`Sincronizando ${records.length} registros...`, 'info');
+
+    const remaining = [];
+    for (const record of records) {
+        try {
+            await enviarRegistro(record);
+        } catch (e) {
+            remaining.push(record);
+        }
+    }
+
+    localStorage.setItem(CONFIG.OFFLINE_KEY, JSON.stringify(remaining));
+    if (remaining.length === 0) {
+        showToast('¡Sincronización completada!', 'success');
+    } else {
+        showToast(`Pendientes: ${remaining.length}`, 'warning');
+    }
+}
+
+// Sistema de Rachas Local (Simulado para feedback inmediato)
+function updateStreakDisplay(curso, grupo, alumno, newStreak = null) {
+    if (newStreak === null) {
+        // Leer racha actual
+        newStreak = calculateStreak(curso, grupo, alumno, true); // true = solo lectura
+    }
+    
+    DOM_ELEMENTS.streakCount.textContent = `${newStreak} ${TRANSLATIONS[currentLang].days}`;
+    
+    // Determinar nivel
+    const level = getStreakLevel(newStreak);
+    DOM_ELEMENTS.streakIcon.textContent = level === 3 ? '🔥' : (level === 2 ? '🦈' : '⭐');
+    
+    // Mensaje motivacional
+    DOM_ELEMENTS.streakMessage.textContent = getRandomStreakMessage(level);
+    
+    DOM_ELEMENTS.streakContainer.classList.add('visible');
+    
+    // Muela de Fuego (Cambiar imagen si existe)
+    if (level === 3 && DOM_ELEMENTS.mascot) {
+        // Opcional: cambiar imagen de mascota
+        // DOM_ELEMENTS.mascot.src = 'img/muela-fuego.svg';
+    }
+}
+
+function calculateStreak(curso, grupo, alumno, readonly = false) {
+    const key = `${curso}_${grupo}_${alumno}`;
+    let streaks = JSON.parse(localStorage.getItem(CONFIG.STREAK_KEY) || '{}');
+    let data = streaks[key] || { count: 0, lastDate: null };
+
+    if (readonly) return data.count;
+
+    // Lógica simple de incremento diario
+    const today = new Date().toDateString();
+    if (data.lastDate !== today) {
+        data.count++;
+        // Aquí se podría añadir lógica compleja de "romper racha" si lastDate es muy antiguo
+        // Por ahora mantenemos simple increment
+    } else {
+        // Ya registró hoy, no suma más, pero mantiene el dato
+    }
+
+    data.lastDate = today;
     streaks[key] = data;
     localStorage.setItem(CONFIG.STREAK_KEY, JSON.stringify(streaks));
-
     return data.count;
 }
 
@@ -177,12 +468,12 @@ function getStreakLevel(count) {
 }
 
 function getRandomStreakMessage(level) {
-    const levelKey = `level${level}`;
-    const msgs = STREAK_MESSAGES[currentLang][levelKey];
+    const t = TRANSLATIONS[currentLang];
+    const msgs = t[`level${level}`] || t.level1;
     return msgs[Math.floor(Math.random() * msgs.length)];
 }
 
-// Audio Feedback System using Web Audio API
+// Audio Feedback System using Web Audio API (FIXED)
 let audioContext = null;
 
 function getAudioContext() {
@@ -195,7 +486,11 @@ function getAudioContext() {
 function playSound(name) {
     try {
         const ctx = getAudioContext();
-        if (ctx.state === 'suspended') ctx.resume();
+        if (!ctx) return;
+        
+        if (ctx.state === 'suspended') {
+            ctx.resume().catch(e => console.warn('Audio resume failed', e));
+        }
 
         const oscillator = ctx.createOscillator();
         const gainNode = ctx.createGain();
@@ -204,16 +499,14 @@ function playSound(name) {
         gainNode.connect(ctx.destination);
 
         if (name === 'bling') {
-            // Sonido de éxito: tono alegre ascendente
-            oscillator.frequency.setValueAtTime(523, ctx.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659, ctx.currentTime + 0.1); // E5
-            oscillator.frequency.setValueAtTime(784, ctx.currentTime + 0.2); // G5
+            oscillator.frequency.setValueAtTime(523, ctx.currentTime);
+            oscillator.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+            oscillator.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
             gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.4);
         } else if (name === 'bubble') {
-            // Sonido de burbuja: tono suave
             oscillator.frequency.setValueAtTime(400, ctx.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
             gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
@@ -221,7 +514,6 @@ function playSound(name) {
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.15);
         } else if (name === 'pop') {
-            // Sonido de pop: explosión corta para botones
             oscillator.type = 'sine';
             oscillator.frequency.setValueAtTime(800, ctx.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.08);
@@ -230,743 +522,87 @@ function playSound(name) {
             oscillator.start(ctx.currentTime);
             oscillator.stop(ctx.currentTime + 0.1);
         }
-    } catch (e) { /* Silent fail for unsupported browsers */ }
-}
-
-// Estado de la App
-let state = {
-    allStudents: {}, // Estructura: { "1º": { "A": ["Juan", "Ana"], "B": [...] }, ... }
-    selection: {
-        curso: '',
-        grupo: '',
-        alumno: '',
-        currentStreak: 0,
-        streakLastDate: null
-    }
-};
-
-// Sistema de racha eliminado - los datos vienen solo de Google Sheets
-
-
-// Selectores
-const screens = {
-    selection: document.getElementById('selection-screen'),
-    action: document.getElementById('action-screen'),
-    success: document.getElementById('success-screen'),
-    race: document.getElementById('race-screen'),
-    admin: document.getElementById('admin-screen')
-};
-
-const selects = {
-    curso: document.getElementById('select-curso'),
-    grupo: document.getElementById('select-grupo'),
-    alumno: document.getElementById('select-alumno')
-};
-
-const buttons = {
-    next: document.getElementById('btn-next'),
-    yes: document.getElementById('btn-yes'),
-    no: document.getElementById('btn-no'),
-    back: document.getElementById('btn-back'),
-    admin: document.getElementById('btn-admin-access')
-};
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-    loadCachedStudents();
-    fetchStudents();
-    setupEventListeners();
-    syncOfflineRecords();
-});
-
-function setupEventListeners() {
-    // Referencias a los contenedores de form-group
-    const fgGrupo = document.getElementById('fg-grupo');
-    const fgAlumno = document.getElementById('fg-alumno');
-
-    selects.curso.addEventListener('change', (e) => {
-        playSound('bubble');
-        state.selection.curso = e.target.value;
-        state.selection.grupo = '';
-        state.selection.alumno = '';
-        updateGroupSelect();
-        validateSelection();
-
-        // CASCADA: Mostrar grupo con animación
-        if (e.target.value && fgGrupo) {
-            fgGrupo.classList.remove('hidden-cascade');
-            fgGrupo.classList.add('visible-cascade');
-        } else if (fgGrupo) {
-            fgGrupo.classList.add('hidden-cascade');
-            fgGrupo.classList.remove('visible-cascade');
-            fgAlumno.classList.add('hidden-cascade');
-            fgAlumno.classList.remove('visible-cascade');
-            buttons.next.classList.add('hidden');
-        }
-    });
-
-    selects.grupo.addEventListener('change', (e) => {
-        playSound('bubble');
-        state.selection.grupo = e.target.value;
-        state.selection.alumno = '';
-        updateAlumnoSelect();
-        validateSelection();
-
-        // CASCADA: Mostrar alumno con animación (sin focus automático)
-        if (e.target.value && fgAlumno) {
-            fgAlumno.classList.remove('hidden-cascade');
-            fgAlumno.classList.add('visible-cascade');
-        } else if (fgAlumno) {
-            fgAlumno.classList.add('hidden-cascade');
-            fgAlumno.classList.remove('visible-cascade');
-            buttons.next.classList.add('hidden');
-        }
-    });
-
-    selects.alumno.addEventListener('change', async (e) => {
-        playSound('bubble');
-        state.selection.alumno = e.target.value;
-        validateSelection();
-
-        // CASCADA: Mostrar botón siguiente y cargar racha del servidor
-        if (e.target.value) {
-            buttons.next.classList.remove('hidden');
-            // Cargar racha real desde Sheets
-            fetchStreakFromServer();
-        } else {
-            buttons.next.classList.add('hidden');
-        }
-    });
-
-    /**
-     * Consulta la racha actual al servidor para el alumno seleccionado
-     */
-    async function fetchStreakFromServer() {
-        const { curso, grupo, alumno } = state.selection;
-        const originalText = buttons.next.textContent;
-
-        buttons.next.disabled = true;
-        buttons.next.textContent = currentLang === 'es' ? '⌛ Cargando racha...' : '⌛ Loading streak...';
-
-        try {
-            const url = `${CONFIG.API_URL}?type=streak&curso=${encodeURIComponent(curso)}&grupo=${encodeURIComponent(grupo)}&alumno=${encodeURIComponent(alumno)}`;
-            console.log("Consultando racha en:", url);
-
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const data = await response.json();
-            state.selection.currentStreak = data.streak || 0;
-            state.selection.streakLastDate = data.lastDate || null;
-            console.log(`✅ Racha de ${alumno} cargada desde servidor: ${state.selection.currentStreak} (Último: ${state.selection.streakLastDate})`);
-
-            // Si hay racha, podemos dar un pequeño feedback visual
-            if (state.selection.currentStreak > 0) {
-                buttons.next.textContent = (currentLang === 'es' ? '¡Listo! Siguiente' : 'Ready! Next') + ' 🔥';
-            } else {
-                buttons.next.textContent = originalText;
-            }
-        } catch (e) {
-            console.error("❌ Error cargando racha de Sheets:", e);
-            // Fallback a racha local
-            const key = getStreakKey(curso, grupo, alumno);
-            const localData = getStreakData(key);
-            state.selection.currentStreak = localData.count;
-            buttons.next.textContent = originalText;
-        } finally {
-            buttons.next.disabled = false;
-            // Si el texto sigue siendo el de carga, restaurar
-            if (buttons.next.textContent.includes('⌛')) {
-                buttons.next.textContent = originalText;
-            }
-        }
-    }
-
-    buttons.next.addEventListener('click', () => {
-        playSound('bubble');
-        showScreen('action');
-        document.getElementById('greeting-name').textContent = `${t('question')} ${state.selection.alumno}?`;
-    });
-
-    buttons.back.addEventListener('click', () => {
-        playSound('bubble');
-        showScreen('selection');
-    });
-
-    buttons.yes.addEventListener('click', () => submitRanking('Sí'));
-    buttons.no.addEventListener('click', () => submitRanking('No'));
-
-    buttons.admin.addEventListener('click', () => {
-        const pin = prompt('Introduce el PIN de Administrador (Cole):');
-        if (pin === CONFIG.ADMIN_PIN) {
-            renderAdminPanel();
-        } else {
-            alert('PIN incorrecto');
-        }
-    });
-
-    // Race Screen
-    const btnShowRace = document.getElementById('btn-show-race');
-    const btnRaceBack = document.getElementById('btn-race-back');
-
-    if (btnShowRace) {
-        btnShowRace.addEventListener('click', () => {
-            playSound('bubble');
-            showScreen('race');
-            fetchRaceStats();
-        });
-    }
-
-    if (btnRaceBack) {
-        btnRaceBack.addEventListener('click', () => {
-            playSound('bubble');
-            showScreen('selection');
-        });
-    }
-
-    // Language Toggle
-    const btnLang = document.getElementById('btn-lang-toggle');
-    if (btnLang) {
-        btnLang.addEventListener('click', () => {
-            playSound('bubble');
-            currentLang = currentLang === 'es' ? 'en' : 'es';
-            updateUILanguage();
-        });
+    } catch (e) {
+        console.warn('Audio fail', e);
     }
 }
 
-// ========== ADMIN PANEL LOGIC ==========
-function renderAdminPanel() {
-    showScreen('admin');
-    const mainMenu = document.getElementById('admin-main-menu');
-    const contentArea = document.getElementById('admin-content');
-
-    mainMenu.classList.remove('hidden');
-    contentArea.classList.add('hidden');
-    contentArea.innerHTML = '';
-
-    // Main Menu Listeners
-    document.getElementById('btn-admin-reset').onclick = () => {
-        playSound('bubble');
-        showResetConfirmation();
-    };
-
-    document.getElementById('btn-admin-back').onclick = () => {
-        playSound('bubble');
-        showScreen('selection');
-    };
+// Efecto de Confeti (Simple)
+function confettiEffect() {
+    // Implementación básica o usar librería externa si se añade
+    // Por simplicidad, aquí solo placeholder visual
+    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
+    for(let i=0; i<30; i++) {
+        const el = document.createElement('div');
+        el.style.position = 'fixed';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-10px';
+        el.style.width = '10px';
+        el.style.height = '10px';
+        el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        el.style.transition = 'top 1s ease-in, transform 1s ease-out';
+        el.style.zIndex = '9999';
+        document.body.appendChild(el);
+        
+        setTimeout(() => {
+            el.style.top = '100vh';
+            el.style.transform = `rotate(${Math.random() * 360}deg)`;
+        }, 10);
+        
+        setTimeout(() => el.remove(), 1000);
+    }
 }
 
-function showResetConfirmation() {
-    const mainMenu = document.getElementById('admin-main-menu');
-    const contentArea = document.getElementById('admin-content');
+// Admin Panel (Basic Simulation)
+function showAdminPanel() {
+    const action = confirm('¿Quieres reiniciar la competición? Esto borrará todos los registros actuales.');
+    if (action) {
+        showResetModal(); 
+    }
+}
 
-    mainMenu.classList.add('hidden');
-    contentArea.classList.remove('hidden');
-
-    contentArea.innerHTML = `
-        <div class="reset-warning">
-            <span class="icon" style="font-size: 3rem;">⚠️</span>
-            <strong>¿REINICIAR COMPETICIÓN?</strong>
-            <p>Se borrarán todos los registros de la carrera y se pondrán a cero las casillas de todos los alumnos de todas las clases.</p>
-            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">Esta acción no se puede deshacer.</p>
-            
-            <div class="admin-actions-bar" style="justify-content: center; margin-top: 25px;">
-                <button id="btn-confirm-reset" class="btn btn-main" style="background: #ff7675;">Sí, REINICIAR</button>
+function showResetModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay visible';
+    overlay.innerHTML = `
+        <div class="modal-card">
+            <h2>⚠️ Zona de Peligro</h2>
+            <p>Escribe <strong>RESET</strong> para confirmar el borrado.</p>
+            <div class="modal-actions">
+                <button id="btn-confirm-reset" class="btn btn-primary">Borrar Todo</button>
                 <button id="btn-cancel-reset" class="btn btn-link">Mejor no...</button>
             </div>
         </div>
     `;
+    document.body.appendChild(overlay);
 
     document.getElementById('btn-confirm-reset').onclick = async () => {
-        const pin = prompt('Escribe "RESET" para confirmar:');
+        const pin = prompt('Confirmación final:');
         if (pin === 'RESET') {
             try {
                 const response = await fetch(CONFIG.API_URL, {
                     method: 'POST',
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: 'resetCompetition' })
                 });
                 const res = await response.json();
                 if (res.status === 'ok') {
-                    alert('Competición reiniciada con éxito.');
+                    alert('Competición reiniciada.');
                     window.location.reload();
+                } else {
+                    alert('Error: ' + res.message);
                 }
             } catch (e) {
                 alert('Error al reiniciar: ' + e);
             }
         }
+        overlay.remove();
     };
 
     document.getElementById('btn-cancel-reset').onclick = () => {
-        playSound('bubble');
-        renderAdminPanel();
+        overlay.remove();
     };
 }
 
-// Lógica de UI
-function showScreen(screenName) {
-    Object.keys(screens).forEach(key => {
-        screens[key].classList.toggle('hidden', key !== screenName);
-    });
-
-    // Ocultar siempre la barra de medallas (usuario la reemplazará luego)
-    const achievementsBar = document.getElementById('achievements-bar');
-    if (achievementsBar) {
-        achievementsBar.classList.add('hidden');
-    }
-
-    // Ocultar botones de idioma y ajustes en pantallas secundarias
-    const headerLeft = document.querySelector('.app-header-left');
-    const headerRight = document.querySelector('.app-header-right');
-    const showHeaderButtons = (screenName === 'selection' || screenName === 'race');
-
-    if (headerLeft) headerLeft.classList.toggle('hidden', !showHeaderButtons);
-    if (headerRight) headerRight.classList.toggle('hidden', !showHeaderButtons);
-
-
-    // RESET CASCADA: Al volver a selección, ocultar grupo/alumno/siguiente
-    if (screenName === 'selection') {
-        const fgGrupo = document.getElementById('fg-grupo');
-        const fgAlumno = document.getElementById('fg-alumno');
-        const btnNext = document.getElementById('btn-next');
-
-        if (fgGrupo) {
-            fgGrupo.classList.add('hidden-cascade');
-            fgGrupo.classList.remove('visible-cascade');
-        }
-        if (fgAlumno) {
-            fgAlumno.classList.add('hidden-cascade');
-            fgAlumno.classList.remove('visible-cascade');
-        }
-        if (btnNext) {
-            btnNext.classList.add('hidden');
-        }
-
-        // Reset selects
-        if (selects.curso) selects.curso.value = '';
-        if (selects.grupo) {
-            selects.grupo.value = '';
-            selects.grupo.disabled = true;
-        }
-        if (selects.alumno) {
-            selects.alumno.value = '';
-            selects.alumno.disabled = true;
-        }
-
-        // Reset state
-        state.selection = { curso: '', grupo: '', alumno: '' };
-    }
-}
-
-
-function updateCursoSelect() {
-    const cursos = Object.keys(state.allStudents);
-    selects.curso.innerHTML = '<option value="">Selecciona curso...</option>' +
-        cursos.map(c => `<option value="${c}">${c}</option>`).join('');
-
-    // Resetear grupo y alumno al cargar cursos
-    selects.grupo.innerHTML = '<option value="">Selecciona grupo...</option>';
-    selects.grupo.disabled = true;
-    selects.alumno.innerHTML = '<option value="">Busca tu nombre...</option>';
-    selects.alumno.disabled = true;
-}
-
-function updateGroupSelect() {
-    const curso = state.selection.curso;
-    if (curso && state.allStudents[curso]) {
-        const grupos = Object.keys(state.allStudents[curso]);
-        selects.grupo.innerHTML = '<option value="">Selecciona grupo...</option>' +
-            grupos.map(g => `<option value="${g}">${g}</option>`).join('');
-        selects.grupo.disabled = false;
-    } else {
-        selects.grupo.innerHTML = '<option value="">Selecciona grupo...</option>';
-        selects.grupo.disabled = true;
-    }
-    updateAlumnoSelect();
-}
-
-function updateAlumnoSelect() {
-    const { curso, grupo } = state.selection;
-    if (curso && grupo !== undefined && state.allStudents[curso] && state.allStudents[curso][grupo]) {
-        const nombres = state.allStudents[curso][grupo];
-        selects.alumno.innerHTML = '<option value="">Busca tu nombre...</option>' +
-            nombres.map(n => `<option value="${n}">${n}</option>`).join('');
-        selects.alumno.disabled = false;
-    } else {
-        selects.alumno.innerHTML = '<option value="">Busca tu nombre...</option>';
-        selects.alumno.disabled = true;
-    }
-}
-
-function validateSelection() {
-    const { curso, grupo, alumno } = state.selection;
-    buttons.next.disabled = !(curso && grupo && alumno);
-}
-
-// API e Integración
-async function fetchStudents() {
-    try {
-        const response = await fetch(CONFIG.API_URL);
-        const data = await response.json();
-        if (data.error) throw new Error(data.error);
-
-        state.allStudents = data;
-        localStorage.setItem(CONFIG.STUDENTS_CACHE_KEY, JSON.stringify(data));
-        updateCursoSelect();
-    } catch (err) {
-        console.error('Error cargando alumnos, usando caché:', err);
-    }
-}
-
-function loadCachedStudents() {
-    const cached = localStorage.getItem(CONFIG.STUDENTS_CACHE_KEY);
-    if (cached) {
-        state.allStudents = JSON.parse(cached);
-        updateCursoSelect();
-    } else {
-        // Datos de ejemplo para el primer arranque si no hay internet
-        state.allStudents = {
-            "1º": { "A": ["Hugo", "Lucía", "Mateo"], "B": ["Sara", "Dani"] },
-            "2º": { "A": ["Martina", "Leo"], "B": ["Emma", "Bruno"] }
-        };
-        updateCursoSelect();
-    }
-}
-
-async function submitRanking(estado) {
-    const payload = {
-        ...state.selection,
-        estado: estado,
-        timestamp: new Date().toISOString()
-    };
-
-    showScreen('success');
-
-    // Gamification: sound and confetti for positive action
-    if (estado === 'Sí') {
-        playSound('bling');
-        if (typeof confetti === 'function') {
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-        }
-
-        // Feedback visual del Guardián si hoy es festivo/finde
-        const todayObj = new Date();
-        const proteccion = GuardianRacha.verificarDia(todayObj);
-
-        // Actualizar racha:
-        // Si la racha es 0, siempre subimos a 1 (primer registro)
-        // PROTECCIÓN ESTRICTA: Si es día protegido, NO sumamos racha. Solo mantenemos.
-
-        const todayStr = todayObj.toISOString().split('T')[0];
-        const serverLastDateStr = state.selection.streakLastDate ? state.selection.streakLastDate.split('T')[0] : null;
-
-        let streak = state.selection.currentStreak;
-
-        if (proteccion.esDiaProtegido) {
-            console.log("🛡️ Día protegido. Racha congelada (no suma, no resta).");
-            // No tocamos 'streak', se queda como vino del servidor o caché
-        } else if (streak === 0) {
-            streak = 1;
-        } else if (serverLastDateStr && serverLastDateStr !== todayStr) {
-            // Comprobar si se ha roto la racha (¿hubo días lectivos vacíos en medio?)
-            let dateCursor = new Date(serverLastDateStr);
-            dateCursor.setDate(dateCursor.getDate() + 1); // Empezamos el día después del último registro
-
-            let rachaRota = false;
-            const todayLimit = new Date(todayStr);
-
-            while (dateCursor < todayLimit) {
-                const check = GuardianRacha.verificarDia(dateCursor);
-                if (!check.esDiaProtegido) {
-                    // Si encontramos un día lectivo que NO se registró, la racha se rompe
-                    rachaRota = true;
-                    break;
-                }
-                dateCursor.setDate(dateCursor.getDate() + 1);
-            }
-
-            if (rachaRota) {
-                console.log("⚠️ Racha interrumpida por falta de limpieza en día lectivo. Reiniciando.");
-                streak = 1;
-            } else {
-                streak = streak + 1;
-            }
-        } else {
-            console.log("La racha del servidor ya incluía hoy. No sumamos.");
-        }
-        if (proteccion.esDiaProtegido) {
-            console.log("🛡️ Guardián activado:", proteccion.mensajeJustificacion);
-            // Podríamos mostrar el mensaje en la UI si quisiéramos
-        }
-
-        const level = getStreakLevel(streak);
-
-        // Actualizar UI de racha
-        const muelaImg = document.getElementById('streak-muela');
-        const daysEl = document.getElementById('streak-days');
-        const labelEl = document.getElementById('streak-label');
-        const messageEl = document.getElementById('streak-message');
-
-        if (muelaImg) muelaImg.src = `img/Muela de fuego-nivel ${level}.svg`;
-        if (daysEl) daysEl.textContent = streak;
-        if (labelEl) labelEl.textContent = streak === 1 ? (currentLang === 'es' ? 'día' : 'day') : (currentLang === 'es' ? 'días' : 'days');
-
-        // Mensaje: Si hoy es día protegido, el Guardián aparece en el mensaje
-        if (proteccion.esDiaProtegido && messageEl) {
-            messageEl.innerHTML = `<span style="color: #FFD700; font-weight: bold;">🛡️ ${proteccion.mensajeJustificacion}</span><br>${getRandomStreakMessage(level)}`;
-        } else if (messageEl) {
-            messageEl.textContent = getRandomStreakMessage(level);
-        }
-
-        // Sincronizar localmente también por seguridad
-        const key = getStreakKey(state.selection.curso, state.selection.grupo, state.selection.alumno);
-        const streaks = JSON.parse(localStorage.getItem(CONFIG.STREAK_KEY) || '{}');
-        streaks[key] = { count: streak, lastDate: new Date().toISOString() };
-        localStorage.setItem(CONFIG.STREAK_KEY, JSON.stringify(streaks));
-    } else {
-        // Si dice "No", mostrar mensaje de ánimo sin incrementar racha
-        const muelaImg = document.getElementById('streak-muela');
-        const daysEl = document.getElementById('streak-days');
-        const labelEl = document.getElementById('streak-label');
-        const messageEl = document.getElementById('streak-message');
-
-        if (muelaImg) muelaImg.src = 'img/Muela de fuego-nivel 1.svg';
-        if (daysEl) daysEl.textContent = '🦷';
-        if (labelEl) labelEl.textContent = '';
-        if (messageEl) messageEl.textContent = currentLang === 'es' ? '¡Mañana será un gran día para cepillarte!' : 'Tomorrow will be a great day to brush!';
-    }
-
-
-    // Enviar en segundo plano (sin await para no bloquear la UI)
-    fetch(CONFIG.API_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    }).then(() => {
-        console.log('Registro enviado correctamente');
-    }).catch(err => {
-        console.warn('Error de red, guardando para sincronizar después:', err);
-        saveOffline(payload);
-    });
-
-    // Volver al inicio con cuenta atrás dinámica
-    // Más tiempo para los más pequeños (1º y 2º)
-    const curso = state.selection.curso;
-    const esInfantil = curso.startsWith('1') || curso.startsWith('2');
-    let secondsLeft = esInfantil ? 10 : 7;
-    const countdownEl = document.getElementById('countdown-text');
-    countdownEl.textContent = t('countdown').replace('{n}', secondsLeft);
-
-    const interval = setInterval(() => {
-        secondsLeft--;
-        if (secondsLeft > 0) {
-            countdownEl.textContent = t('countdown').replace('{n}', secondsLeft);
-        } else {
-            clearInterval(interval);
-            // Reset y volver al inicio
-            state.selection = { curso: '', grupo: '', alumno: '' };
-            selects.curso.value = '';
-            updateGroupSelect();
-            validateSelection();
-            countdownEl.textContent = ''; // Reset texto
-            showScreen('selection');
-        }
-    }, 700);
-}
-
-// Gestión Offline
-function saveOffline(payload) {
-    const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
-    records.push(payload);
-    localStorage.setItem(CONFIG.OFFLINE_KEY, JSON.stringify(records));
-}
-
-async function syncOfflineRecords() {
-    const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
-    if (records.length === 0) return;
-
-    console.log(`Sincronizando ${records.length} registros pendientes...`);
-
-    // Intentar enviar registros uno a uno
-    const remaining = [];
-    for (const record of records) {
-        try {
-            await fetch(CONFIG.API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(record)
-            });
-        } catch (err) {
-            remaining.push(record);
-        }
-    }
-
-    localStorage.setItem(CONFIG.OFFLINE_KEY, JSON.stringify(remaining));
-}
-
-// Race Screen Logic
-async function fetchRaceStats() {
-    const container = document.getElementById('race-container');
-    container.innerHTML = '<div class="loading-race">Calculando posiciones... 🏎️💨</div>';
-
-    try {
-        const response = await fetch(`${CONFIG.API_URL}?type=stats`);
-        const stats = await response.json();
-
-        if (stats.error) throw new Error(stats.error);
-
-        // Convert to array, filter out non-course keys, and sort
-        const sorted = Object.entries(stats)
-            .filter(([key]) => key !== 'debug_info' && key !== 'error')
-            .map(([curso, count]) => ({ curso, count }))
-            .sort((a, b) => b.count - a.count);
-
-        const maxCount = sorted[0]?.count || 1;
-
-        container.innerHTML = sorted.map((item, index) => {
-            const widthPercent = Math.max(10, (item.count / maxCount) * 100);
-            const isLeader = index === 0 && item.count > 0;
-            return `
-                <div class="race-bar-wrapper">
-                    <span class="race-label">${item.curso}</span>
-                    <div class="race-bar ${isLeader ? 'leader' : ''}" style="width: ${widthPercent}%">
-                        ${item.count} ${isLeader ? '🏆' : ''}
-                    </div>
-                </div>
-            `;
-        }).join('');
-    } catch (err) {
-        console.error('Error fetching race stats:', err);
-        container.innerHTML = '<p>No se pudieron cargar las estadísticas. Inténtalo de nuevo.</p>';
-    }
-}
-
-// Language UI Update
-function updateUILanguage() {
-    // Selection Screen
-    const titleEl = document.querySelector('#selection-screen header h1');
-    const subtitleEl = document.querySelector('#selection-screen header p');
-    if (titleEl) titleEl.textContent = t('title');
-    if (subtitleEl) subtitleEl.textContent = t('subtitle');
-
-    // Labels
-    const labels = document.querySelectorAll('#selection-screen label');
-    if (labels[0]) labels[0].textContent = t('course');
-    if (labels[1]) labels[1].textContent = t('group');
-    if (labels[2]) labels[2].textContent = t('who');
-
-    // Buttons
-    const btnNext = document.getElementById('btn-next');
-    const btnShowRace = document.getElementById('btn-show-race');
-    const btnYes = document.querySelector('#btn-yes .text');
-    const btnNo = document.querySelector('#btn-no .text');
-    const btnBack = document.getElementById('btn-back');
-    const btnRaceBack = document.getElementById('btn-race-back');
-
-    if (btnNext) btnNext.innerHTML = t('next');
-    if (btnShowRace) btnShowRace.innerHTML = t('viewRace');
-    if (btnYes) btnYes.textContent = t('done');
-    if (btnNo) btnNo.textContent = t('notYet');
-    if (btnBack) btnBack.innerHTML = t('back');
-    if (btnRaceBack) btnRaceBack.textContent = t('backToReg');
-
-    // Race Screen
-    const raceTitleEl = document.querySelector('#race-screen header h1');
-    const raceSubEl = document.querySelector('#race-screen header p');
-    if (raceTitleEl) raceTitleEl.textContent = t('raceTitle');
-    if (raceSubEl) raceSubEl.textContent = t('raceSubtitle');
-
-    // Update select placeholders
-    selects.curso.querySelector('option[value=""]').textContent = t('selectCourse');
-    selects.grupo.querySelector('option[value=""]').textContent = t('selectGroup');
-    selects.alumno.querySelector('option[value=""]').textContent = t('searchName');
-
-    // Language button text
-    const btnLang = document.getElementById('btn-lang-toggle');
-    if (btnLang) btnLang.textContent = currentLang === 'es' ? '🇬🇧 EN' : '🇪🇸 ES';
-}
-
-// ========== SECRET DEBUG SYSTEM ==========
-let logoClicks = 0;
-let logoTimer = null;
-
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('school-logo')) {
-        logoClicks++;
-        clearTimeout(logoTimer);
-        logoTimer = setTimeout(() => { logoClicks = 0; }, 2000);
-
-        if (logoClicks >= 5) {
-            const panel = document.getElementById('test-panel');
-            if (panel) {
-                panel.classList.toggle('hidden');
-                if (!panel.classList.contains('hidden')) {
-                    console.log("🕵️ Modo Desarrollador Activado");
-                    playSound('bling');
-                }
-            }
-            logoClicks = 0;
-        }
-    }
-});
-
-/**
- * Función de depuración para probar rachas desde la UI
- * @param {number} days - Número de días de racha a simular
- */
-window.debugSetStreak = function (days) {
-    const curso = selects.curso.value;
-    const grupo = selects.grupo.value;
-    const alumno = selects.alumno.value;
-
-    if (!alumno) {
-        alert(currentLang === 'es' ? '¡Primero selecciona un alumno!' : 'Please select a student first!');
-        return;
-    }
-
-    const key = getStreakKey(curso, grupo, alumno);
-    const streaks = JSON.parse(localStorage.getItem(CONFIG.STREAK_KEY) || '{}');
-
-    // Simulamos que ayer fue su último cepillado para que hoy sume 1
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    streaks[key] = {
-        count: days - 1,
-        lastDate: yesterday.toISOString()
-    };
-
-    localStorage.setItem(CONFIG.STREAK_KEY, JSON.stringify(streaks));
-    alert(currentLang === 'es' ?
-        `✅ Datos preparados. ¡Ahora pulsa "Siguiente" y luego "¡Hecho!" para enviar el registro real a Google Sheets con racha de ${days} días!` :
-        `✅ Data ready. Click "Next" and then "Done!" to send a real record to Google Sheets with a ${days}-day streak!`);
-};
-
-// Toast System
-function showToast(message, type = 'info') {
-    let toast = document.getElementById('app-toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'app-toast';
-        toast.className = 'toast';
-        document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.className = 	oast visible ;
-    setTimeout(() => { toast.classList.remove('visible'); }, 3000);
-}
-
-// Online/Offline Listeners
-window.addEventListener('online', () => {
-    showToast(currentLang === 'es' ? 'Conexi�n recuperada ??' : 'Connection restored ??', 'success');
-    syncOfflineRecords();
-});
-
-window.addEventListener('offline', () => {
-    showToast(currentLang === 'es' ? 'Modo sin conexi�n ??' : 'Offline mode ??', 'warning');
-});
+// Inicializar
+document.addEventListener('DOMContentLoaded', initApp);
