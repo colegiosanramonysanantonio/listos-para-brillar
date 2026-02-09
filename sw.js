@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cepillos-v3';
+﻿const CACHE_NAME = 'cepillos-v4';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -10,7 +10,6 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-    // Force the waiting service worker to become the active service worker.
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -25,7 +24,6 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
             .then((response) => {
-                // Cache hit - return response
                 if (response) {
                     return response;
                 }
@@ -47,6 +45,5 @@ self.addEventListener('activate', (event) => {
             );
         })
     );
-    // Claim any clients immediately, so that the page will be controlled by the service worker immediately.
     return self.clients.claim();
 });
