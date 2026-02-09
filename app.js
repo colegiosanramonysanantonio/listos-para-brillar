@@ -527,31 +527,29 @@ function playSound(name) {
     }
 }
 
-// Efecto de Confeti (Simple)
-function confettiEffect() {
-    // Implementación básica o usar librería externa si se añade
-    // Por simplicidad, aquí solo placeholder visual
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00'];
-    for(let i=0; i<30; i++) {
-        const el = document.createElement('div');
-        el.style.position = 'fixed';
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.top = '-10px';
-        el.style.width = '10px';
-        el.style.height = '10px';
-        el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        el.style.transition = 'top 1s ease-in, transform 1s ease-out';
-        el.style.zIndex = '9999';
-        document.body.appendChild(el);
-        
-        setTimeout(() => {
-            el.style.top = '100vh';
-            el.style.transform = `rotate(${Math.random() * 360}deg)`;
-        }, 10);
-        
-        setTimeout(() => el.remove(), 1000);
+// Toast System
+function showToast(message, type = 'info') {
+    let toast = document.getElementById('app-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'app-toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
     }
+    toast.textContent = message;
+    toast.className = 'toast visible';
+    setTimeout(() => { toast.classList.remove('visible'); }, 3000);
 }
+
+// Online/Offline Listeners
+window.addEventListener('online', () => {
+    showToast(currentLang === 'es' ? 'Conexión recuperada 📡' : 'Connection restored 📡', 'success');
+    syncOfflineRecords();
+});
+
+window.addEventListener('offline', () => {
+    showToast(currentLang === 'es' ? 'Modo sin conexión 📡' : 'Offline mode 📡', 'warning');
+});
 
 // Admin Panel (Basic Simulation)
 function showAdminPanel() {
