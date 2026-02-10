@@ -420,23 +420,23 @@ function showSuccessScreen(streak) {
     // Counter: Number + Label (Yellow/Bold defined in CSS)
     DOM.text.streakDays.innerHTML = `${streak}<br><span style="font-size:0.4em">${label}</span>`;
 
-    // Messages Adapted by Course Level
+    // Messages Adapted by Course Level (User Specific List)
     const MESSAGES_LOWER = [
-        "¡MUY BIEN!",
-        "¡GENIAL!",
-        "¡SUPER!",
-        "¡CAMPEÓN!",
-        "¡BRAVO!"
+        "⭐ Brillas como una estrella",
+        "🏆 Sonrisa de campeón",
+        "😁🦷 Dientes limpios, sonrisa feliz",
+        "✨ Estás que reluces"
     ];
     const MESSAGES_UPPER = [
-        "¡BRUTAL!",
-        "¡NIVEL PRO!",
-        "¡TOP!",
-        "¡IMPARABLE!",
-        "¡LEGENDARIO!"
+        "🚀 Nivel brillo máximo",
+        "🎯 Tu sonrisa gana puntos",
+        "💡 Hoy iluminas la clase",
+        "🔆 Has encendido tu sonrisa",
+        "🎯 Misión dientes limpios: superada"
     ];
-    // Default mix for unknown courses
-    let pool = [...MESSAGES_LOWER, ...MESSAGES_UPPER, "¡BRILLANTE!", "¡ASOMBROSO!"];
+
+    // Default pool
+    let pool = [...MESSAGES_LOWER, ...MESSAGES_UPPER];
 
     const curso = selectedStudent.curso || '';
     if (curso.startsWith('1') || curso.startsWith('2') || curso.toLowerCase().includes('infantil')) {
@@ -446,8 +446,15 @@ function showSuccessScreen(streak) {
     }
 
     const randomMsg = pool[Math.floor(Math.random() * pool.length)];
-    DOM.text.streakMessage.textContent = randomMsg;
+    DOM.text.streakMessage.innerHTML = randomMsg.replace(/\n/g, '<br>');
     DOM.text.streakLabel.textContent = '';
+
+    // Auto-resize long messages logic
+    if (randomMsg.length > 25) {
+        DOM.text.streakMessage.style.fontSize = "clamp(1.5rem, 6vw, 3rem)";
+    } else {
+        DOM.text.streakMessage.style.removeProperty('font-size');
+    }
 
     // Visual Level Logic
     let level = 1;
