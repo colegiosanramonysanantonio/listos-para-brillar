@@ -420,29 +420,43 @@ function showSuccessScreen(streak) {
     // Counter: Number + Label (Yellow/Bold defined in CSS)
     DOM.text.streakDays.innerHTML = `${streak}<br><span style="font-size:0.4em">${label}</span>`;
 
-    // Message: Random Selection (Black/Bold defined in CSS)
-    const MESSAGES = [
-        "¡SIGUE ASÍ!",
+    // Messages Adapted by Course Level
+    const MESSAGES_LOWER = [
         "¡MUY BIEN!",
-        "¡FANTASTICO!",
         "¡GENIAL!",
-        "¡INCREÍBLE!",
         "¡SUPER!",
-        "¡BRILLANTE!",
-        "¡ASOMBROSO!"
+        "¡CAMPEÓN!",
+        "¡BRAVO!"
     ];
-    const randomMsg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-    DOM.text.streakMessage.textContent = randomMsg;
-    DOM.text.streakLabel.textContent = ''; // Hidden mainly by CSS
+    const MESSAGES_UPPER = [
+        "¡BRUTAL!",
+        "¡NIVEL PRO!",
+        "¡TOP!",
+        "¡IMPARABLE!",
+        "¡LEGENDARIO!"
+    ];
+    // Default mix for unknown courses
+    let pool = [...MESSAGES_LOWER, ...MESSAGES_UPPER, "¡BRILLANTE!", "¡ASOMBROSO!"];
 
+    const curso = selectedStudent.curso || '';
+    if (curso.startsWith('1') || curso.startsWith('2') || curso.toLowerCase().includes('infantil')) {
+        pool = MESSAGES_LOWER;
+    } else if (curso.startsWith('3') || curso.startsWith('4') || curso.startsWith('5') || curso.startsWith('6')) {
+        pool = MESSAGES_UPPER;
+    }
+
+    const randomMsg = pool[Math.floor(Math.random() * pool.length)];
+    DOM.text.streakMessage.textContent = randomMsg;
+    DOM.text.streakLabel.textContent = '';
+
+    // Visual Level Logic
     let level = 1;
     if (streak >= 4) level = 2;
     if (streak >= 11) level = 3;
     DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
-    // Variable Timer Logic
-    let seconds = 5; // Default
-    const curso = selectedStudent.curso;
+    // Variable Timer Logic based on Course
+    let seconds = 5;
     if (curso.startsWith('1') || curso.startsWith('2')) {
         seconds = 10;
     } else if (curso.startsWith('3') || curso.startsWith('4')) {
