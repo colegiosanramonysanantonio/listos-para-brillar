@@ -1,16 +1,13 @@
 ﻿/**
- * App "Cepillos" - Frontend Logic v7
- * - New API URL (GAS v2)
- * - Valid Race URL
- * - Full Translations (Labels + Placeholders)
- * - Text Overflow Fixes
+ * App "Cepillos" - Frontend Logic v8
+ * - Internal Race Screen (Restored)
+ * - Header Buttons Logic (Hidden on Action/Success)
+ * - Full Translations (Intro Title/Subtitle)
+ * - Streak Fix logic handled in Backend
  */
 
 const CONFIG = {
-    // New Script URL provided by user
     API_URL: 'https://script.google.com/macros/s/AKfycbwxBRZgZCj_mpKb8Oi7YFKHooQtpCxVUWoJUjOO1kgakU30SfJvKEVhc2922Ep-qnx9/exec',
-    // Valid Public HTML URL
-    RACE_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqATu00puJjw5dIDtsB4QWDusNCMhCWUj8ghcF45PMJMbJxuCt7fdqb2LSPLhYuaN8o8SJNFIqeiwC/pubhtml',
     OFFLINE_KEY: 'cepillos_offline_records',
     STUDENTS_CACHE_KEY: 'cepillos_students_cache',
     ADMIN_PIN: '1926'
@@ -19,6 +16,8 @@ const CONFIG = {
 const TRANSLATIONS = {
     es: {
         loading: 'Cargando...',
+        intro_title: '¡Listos para brillar! ✨',
+        intro_subtitle: 'Elige tu curso para empezar',
         label_course: '🏫 Curso',
         label_group: '👥 Grupo',
         label_student: '👤 ¿Quién eres?',
@@ -35,10 +34,16 @@ const TRANSLATIONS = {
         sending: 'Enviando...',
         btn_race: 'Ver Carrera 🏆',
         btn_admin_back: '⬅️ Salir del Panel',
-        countdown_prefix: 'Volviendo en '
+        countdown_prefix: 'Volviendo en ',
+        race_title: '🏆 La Gran Carrera',
+        race_subtitle: '¿Qué curso va en cabeza?',
+        race_loading: 'Calculando posiciones... 🏎️💨',
+        btn_back_home: 'Volver al Inicio'
     },
     en: {
         loading: 'Loading...',
+        intro_title: 'Ready to Shine! ✨',
+        intro_subtitle: 'Choose your grade to start',
         label_course: '🏫 Grade',
         label_group: '👥 Class',
         label_student: '👤 Who are you?',
@@ -55,7 +60,11 @@ const TRANSLATIONS = {
         sending: 'Sending...',
         btn_race: 'See Race 🏆',
         btn_admin_back: '⬅️ Exit Panel',
-        countdown_prefix: 'Returning in '
+        countdown_prefix: 'Returning in ',
+        race_title: '🏆 The Great Race',
+        race_subtitle: 'Which grade is leading?',
+        race_loading: 'Calculating positions... 🏎️💨',
+        btn_back_home: 'Back to Home'
     }
 };
 
@@ -84,6 +93,15 @@ const DOM = {
         grupo: document.getElementById('label-grupo'),
         alumno: document.getElementById('label-alumno')
     },
+    headers: {
+        introTitle: document.querySelector('#selection-screen header h1'),
+        introSubtitle: document.querySelector('#selection-screen header p'),
+        raceTitle: document.querySelector('#race-screen header h1'),
+        raceSubtitle: document.querySelector('#race-screen header p'),
+        left: document.querySelector('.app-header-left'),
+        right: document.querySelector('.app-header-right')
+    },
+    raceContainer: document.getElementById('race-container'),
     buttons: {
         next: document.getElementById('btn-next'),
         race: document.getElementById('btn-show-race'),
@@ -107,7 +125,7 @@ const DOM = {
 };
 
 function initApp() {
-    console.log('App v7 Initializing...');
+    console.log('App v8 Initializing...');
     loadStudentData();
     setupEventListeners();
     updateLanguage();
@@ -154,6 +172,7 @@ function populateCursos() {
     });
 }
 
+// Fetch Streak (updated V8, same logic, relies on backend fix)
 async function fetchStreak(curso, grupo, alumno) {
     if (!navigator.onLine) return 0;
     try {
@@ -162,8 +181,44 @@ async function fetchStreak(curso, grupo, alumno) {
         const data = await res.json();
         return data.streak || 0;
     } catch (e) {
-        console.warn('Streak fetch failed', e);
         return 0;
+    }
+}
+
+async function loadRace() {
+    DOM.raceContainer.innerHTML = `<div class="loading-race">${TRANSLATIONS[currentLang].race_loading}</div>`;
+    try {
+        const res = await fetch(`${CONFIG.API_URL}?type=ranking`);
+        const ranking = await res.json();
+
+        DOM.raceContainer.innerHTML = '';
+        if (!ranking || ranking.length === 0) {
+            DOM.raceContainer.innerHTML = '<p>No data yet.</p>';
+            return;
+        }
+
+        // Find max points for scaling
+        const maxPoints = Math.max(...ranking.map(r => r.points));
+
+        ranking.forEach((r, index) => {
+            const row = document.createElement('div');
+            row.className = 'race-bar-wrapper';
+
+            const widthPct = maxPoints > 0 ? (r.points / maxPoints) * 100 : 0;
+            const isLeader = index === 0;
+
+            row.innerHTML = `
+                <div class="race-label">${r.clase}</div>
+                <div class="race-bar ${isLeader ? 'leader' : ''}" style="width: ${Math.max(widthPct, 10)}%;">
+                    ${r.points}
+                </div>
+            `;
+            DOM.raceContainer.appendChild(row);
+        });
+
+    } catch (e) {
+        console.error(e);
+        DOM.raceContainer.innerHTML = '<p>Error loading race 🏁</p>';
     }
 }
 
@@ -239,8 +294,6 @@ function setupEventListeners() {
         if (selectedStudent.nombre) {
             DOM.buttons.next.classList.remove('hidden');
             DOM.buttons.next.disabled = false;
-
-            // Background fetch streak
             currentStreakValue = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
         } else {
             DOM.buttons.next.classList.add('hidden');
@@ -248,13 +301,11 @@ function setupEventListeners() {
         }
     });
 
-    // Navigation
     DOM.buttons.next.addEventListener('click', () => {
         playSound('bubble');
         showScreen('action');
         const firstName = selectedStudent.nombre.split(' ')[0];
         const t = TRANSLATIONS[currentLang];
-        // Ensure greeting is split correctly to avoid overflow
         DOM.text.greeting.innerHTML = `<span style="display:block;font-size:0.9em;margin-bottom:10px">${t.greeting_prefix}${firstName}!</span>${t.question}`;
     });
 
@@ -263,22 +314,18 @@ function setupEventListeners() {
         showScreen('selection');
     });
 
+    // Race Button (Internal)
     DOM.buttons.race.addEventListener('click', () => {
         playSound('bubble');
-        if (CONFIG.RACE_URL) {
-            window.open(CONFIG.RACE_URL, '_blank');
-        } else {
-            alert('Link not configured.');
-        }
+        showScreen('race');
+        loadRace();
     });
 
     DOM.buttons.raceBack.addEventListener('click', () => showScreen('selection'));
 
-    // Action Buttons
     DOM.buttons.yes.addEventListener('click', () => handleRegister('Sí'));
     DOM.buttons.no.addEventListener('click', () => handleRegister('No'));
 
-    // Header
     DOM.buttons.lang.addEventListener('click', () => {
         playSound('pop');
         currentLang = currentLang === 'es' ? 'en' : 'es';
@@ -292,7 +339,6 @@ function setupEventListeners() {
 
     DOM.buttons.adminClose.addEventListener('click', () => showScreen('selection'));
 
-    // Admin Reset
     DOM.buttons.adminReset.addEventListener('click', async () => {
         if (confirm('RESET ALL DATA?')) {
             await fetch(CONFIG.API_URL, { method: 'POST', body: JSON.stringify({ action: 'resetCompetition' }) });
@@ -374,6 +420,17 @@ function showSuccessScreen(streak) {
 function showScreen(screenName) {
     Object.values(DOM.screens).forEach(el => el.classList.add('hidden'));
     DOM.screens[screenName].classList.remove('hidden');
+
+    // UI Overlap Fix: Hide header buttons on Action/Success screens
+    // Show only on Selection and Race (maybe?)
+    // User requested "disappear from that screen (action) and final (success)"
+    if (screenName === 'action' || screenName === 'success') {
+        DOM.headers.left.style.display = 'none';
+        DOM.headers.right.style.display = 'none';
+    } else {
+        DOM.headers.left.style.display = 'block';
+        DOM.headers.right.style.display = 'block';
+    }
 }
 
 function resetApp() {
@@ -405,8 +462,6 @@ async function syncOfflineRecords() {
     if (!navigator.onLine) return;
     const records = JSON.parse(localStorage.getItem(CONFIG.OFFLINE_KEY) || '[]');
     if (records.length === 0) return;
-
-    showToast(`Syncing ${records.length}...`);
     const failed = [];
     for (const record of records) {
         try {
@@ -427,15 +482,20 @@ function updateLanguage() {
     const t = TRANSLATIONS[currentLang];
     DOM.buttons.lang.textContent = currentLang === 'es' ? '🇬🇧 EN' : '🇪🇸 ES';
     DOM.buttons.race.innerHTML = t.btn_race;
+    DOM.buttons.raceBack.innerHTML = t.btn_back_home;
     DOM.buttons.adminClose.innerHTML = t.btn_admin_back;
     DOM.buttons.next.innerHTML = t.btn_next;
 
-    // Update Label Text
+    if (DOM.headers.introTitle) DOM.headers.introTitle.textContent = t.intro_title;
+    if (DOM.headers.introSubtitle) DOM.headers.introSubtitle.textContent = t.intro_subtitle;
+
+    if (DOM.headers.raceTitle) DOM.headers.raceTitle.textContent = t.race_title;
+    if (DOM.headers.raceSubtitle) DOM.headers.raceSubtitle.textContent = t.race_subtitle;
+
     if (DOM.labels.curso) DOM.labels.curso.textContent = t.label_course;
     if (DOM.labels.grupo) DOM.labels.grupo.textContent = t.label_group;
     if (DOM.labels.alumno) DOM.labels.alumno.textContent = t.label_student;
 
-    // Update Selects (Force)
     if (DOM.inputs.curso.options[0]) DOM.inputs.curso.options[0].text = t.select_course;
     if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
     if (DOM.inputs.alumno.options[0]) DOM.inputs.alumno.options[0].text = t.select_student;
@@ -481,5 +541,4 @@ function playSound(type) {
     } catch (e) { }
 }
 const confettiEffect = () => { /* ... */ };
-
 document.addEventListener('DOMContentLoaded', initApp);
