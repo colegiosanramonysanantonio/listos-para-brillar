@@ -26,7 +26,7 @@ const TRANSLATIONS = {
         select_student: 'Busca tu nombre...',
         btn_next: 'Siguiente 👉',
         greeting_prefix: '¡Hola, ',
-        question: '¿Te has lavado los dientes hoy?',
+        question: '¿Tus dientes ya están listos para brillar?',
         streak_days: 'días',
         success_title: '¡Genial!',
         offline_mode: 'Modo sin conexión 📡',
@@ -54,7 +54,7 @@ const TRANSLATIONS = {
         select_student: 'Find your name...',
         btn_next: 'Next 👉',
         greeting_prefix: 'Hello, ',
-        question: 'Did you brush your teeth today?',
+        question: 'Are your teeth ready to shine?',
         streak_days: 'days',
         success_title: 'Awesome!',
         offline_mode: 'Offline mode 📡',
@@ -319,7 +319,7 @@ function setupEventListeners() {
         const firstName = selectedStudent.nombre.split(' ')[0];
         const t = TRANSLATIONS[currentLang];
         DOM.text.greeting.innerHTML = `
-            <span class="highlight-name">${firstName}</span>
+            ${t.greeting_prefix} <span class="highlight-name" style="font-size: clamp(2rem, 5vw, 3rem)">${firstName}</span>! ✨
             <br>
             <span class="question-text">${t.question}</span>
         `;

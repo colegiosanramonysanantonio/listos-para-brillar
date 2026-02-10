@@ -25,6 +25,7 @@ body {
     height: 100vh;
     /* Force fixed height */
     overflow: hidden;
+    touch-action: manipulation;
     /* Prevent body scroll, handle inside containers */
     display: flex;
     justify-content: center;
@@ -102,8 +103,9 @@ body {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    width: 75%;
-    max-width: 420px;
+    width: 90%;
+    /* Mobile default */
+    max-width: 800px;
     border-radius: 25px;
     padding: 20px 25px 15px;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -112,6 +114,12 @@ body {
     min-height: auto;
     display: flex;
     flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 50%;
+    }
 }
 
 .screen {
@@ -1331,4 +1339,12 @@ select:disabled {
     overflow-wrap: break-word;
     height: auto;
     min-height: 3em;
+}
+/* Mejora de accesibilidad para botones en móvil */
+@media (max-width: 768px) {
+    .btn {
+        min-height: 54px;
+        font-size: 1.15rem;
+        padding: 12px 25px;
+    }
 }
