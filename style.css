@@ -23,11 +23,15 @@ body {
     color: var(--text-main);
     min-height: 100vh;
     height: 100vh;
+    /* Force fixed height */
     overflow: hidden;
+    /* Prevent body scroll, handle inside containers */
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 80px 20px 20px;
+    align-items: center;
+    /* Center vertically and horizontally */
+    padding: 20px;
+    /* Reduced padding for small screens */
 }
 
 /* Logo del Colegio - Centrado y compacto */
@@ -870,8 +874,13 @@ select:disabled {
 
 #race-screen {
     gap: 15px;
-    /* Más cerca de los resultados */
-    justify-content: flex-start;
+    height: 100vh;
+    /* Fill screen to prevent body scroll */
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center content vertically */
 }
 
 #race-screen header {
