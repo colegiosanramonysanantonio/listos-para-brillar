@@ -1107,61 +1107,63 @@ select:disabled {
     }
 }
 
-.admin-content:not(.hidden) {
-    animation: fadeInAdmin 0.3s ease-out;
-}
-
-/* ========== STREAK CELEBRATION SYSTEM ========== */
+/* ========== STREAK CELEBRATION SYSTEM (GIANT STYLE) ========== */
 .streak-celebration {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 15px;
     gap: 10px;
-    min-height: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+}
+
+/* Animación: Nadar hacia el frente */
+@keyframes nadarHaciaElFrente {
+    0% {
+        transform: scale(0.2) translateY(200px) rotateX(20deg);
+        opacity: 0.5;
+        filter: blur(4px);
+    }
+
+    100% {
+        transform: scale(1) translateY(0) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0);
+    }
 }
 
 .streak-muela {
-    width: 320px;
+    width: 85%;
+    max-width: 450px;
     height: auto;
-    animation: pulse-glow 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 40px rgba(255, 150, 0, 0.8));
-}
-
-@keyframes pulse-glow {
-
-    0%,
-    100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 40px rgba(255, 150, 0, 0.8));
-    }
-
-    50% {
-        transform: scale(1.08);
-        filter: drop-shadow(0 0 60px rgba(255, 200, 0, 1.0));
-    }
+    animation: nadarHaciaElFrente 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    transform-origin: center center;
+    z-index: 2;
+    margin-bottom: -20px;
 }
 
 .streak-counter {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
+    position: relative;
+    z-index: 5;
 }
 
 .streak-counter #streak-days {
     font-family: 'Baloo 2', cursive;
-    font-size: 5rem;
-    font-weight: 800;
+    font-size: clamp(6rem, 25vw, 10rem);
+    font-weight: 900;
     color: #FFD700;
-    text-shadow:
-        3px 3px 0 #CC8800,
-        -1px -1px 0 #FFEC8B,
-        0 0 30px rgba(255, 215, 0, 0.6);
-    line-height: 1;
-    animation: count-pop 0.5s ease-out;
+    line-height: 0.85;
+    letter-spacing: -2px;
+    text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 8px 20px rgba(0, 0, 0, 0.4);
+    animation: count-pop 0.6s ease-out 0.5s both;
 }
 
 @keyframes count-pop {
@@ -1182,64 +1184,38 @@ select:disabled {
 
 .streak-counter .streak-label {
     font-family: 'Baloo 2', cursive;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #CC8800;
+    font-size: clamp(1.8rem, 8vw, 3rem);
+    font-weight: 800;
+    color: #ffffff;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-top: -5px;
+    text-shadow: 2px 2px 0 #000, 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-top: 5px;
 }
 
 .streak-message {
-    font-size: 1.15rem;
-    font-weight: 600;
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+    font-weight: 700;
     color: var(--text-main);
-    max-width: 300px;
-    line-height: 1.5;
-    padding: 0 10px;
-    animation: fadeInMessage 0.8s ease-out 0.3s both;
-}
-
-@keyframes fadeInMessage {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+    max-width: 90%;
+    animation: fadeInMessage 1s ease-out 1s both;
 }
 
 .countdown-text {
     font-size: 0.9rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 15px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
     .streak-muela {
-        width: 280px;
-    }
-
-    .streak-counter #streak-days {
-        font-size: 4rem;
-    }
-
-    .streak-message {
-        font-size: 1.05rem;
-        max-width: 260px;
-    }
-}
-
-@media (max-width: 480px) {
-    .streak-muela {
-        width: 240px;
-    }
-
-    .streak-counter #streak-days {
-        font-size: 3.5rem;
+        max-width: 550px;
     }
 }
 
@@ -1340,6 +1316,7 @@ select:disabled {
     height: auto;
     min-height: 3em;
 }
+
 /* Mejora de accesibilidad para botones en móvil */
 @media (max-width: 768px) {
     .btn {
