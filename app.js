@@ -6,7 +6,7 @@
  */
 
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbzg-Oub3EmB1MZ4xH2HhUYn4QXyS82NMJsVXjowx_m17iAfFXNCbHqomrp-Sg5ePWNp/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbyE1PQgWwhd05dIgsl82FkmIlBRp034ZiiT1z8OyV3wTj7v34c0LX4uDYIElOHSBa4/exec',
     OFFLINE_KEY: 'cepillos_offline_records',
     STUDENTS_CACHE_KEY: 'cepillos_students_cache',
     ADMIN_PIN: '1926'
@@ -37,7 +37,9 @@ const TRANSLATIONS = {
         race_title: '🏆 La Gran Carrera',
         race_subtitle: '¿Qué curso va en cabeza?',
         race_loading: 'Calculando posiciones... 🏎️💨',
-        btn_back_home: 'Volver al Inicio'
+        btn_back_home: 'Volver al Inicio',
+        btn_yes: '¡Sí, brillan! ✨',
+        btn_no: 'Volver atrás'
     },
     en: {
         loading: 'Loading...',
@@ -58,12 +60,17 @@ const TRANSLATIONS = {
         connection_restored: 'Connection restored 📡',
         sending: 'Sending...',
         btn_race: 'See Race 🏆',
-        btn_admin_back: '⬅️ Exit Panel',
-        countdown_prefix: 'Returning in ',
+        btn_back_home: 'Back to Home',
+        btn_yes: 'Yes, shiny! ✨',
+        btn_no: 'Go Back'
+    }
+};
+btn_admin_back: '⬅️ Exit Panel',
+    countdown_prefix: 'Returning in ',
         race_title: '🏆 The Great Race',
-        race_subtitle: 'Which grade is leading?',
-        race_loading: 'Calculating positions... 🏎️💨',
-        btn_back_home: 'Back to Home'
+            race_subtitle: 'Which grade is leading?',
+                race_loading: 'Calculating positions... 🏎️💨',
+                    btn_back_home: 'Back to Home'
     }
 };
 
@@ -307,7 +314,11 @@ function setupEventListeners() {
         showScreen('action');
         const firstName = selectedStudent.nombre.split(' ')[0];
         const t = TRANSLATIONS[currentLang];
-        DOM.text.greeting.innerHTML = `<span style="display:block;font-size:0.9em;margin-bottom:10px">${t.greeting_prefix}${firstName}!</span>${t.question}`;
+        DOM.text.greeting.innerHTML = `
+            <span class="highlight-name">${firstName}</span>
+            <br>
+            <span class="question-text">${t.question}</span>
+        `;
     });
 
     DOM.buttons.back.addEventListener('click', () => {
@@ -407,7 +418,18 @@ function showSuccessScreen(streak) {
     if (streak >= 11) level = 3;
     DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
-    let seconds = 5;
+    DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
+
+    // Variable Timer Logic
+    let seconds = 5; // Default
+    const curso = selectedStudent.curso;
+    if (curso.startsWith('1') || curso.startsWith('2')) {
+        seconds = 10;
+    } else if (curso.startsWith('3') || curso.startsWith('4')) {
+        seconds = 7;
+    } else if (curso.startsWith('5') || curso.startsWith('6')) {
+        seconds = 5;
+    }
     const updateCountdown = () => {
         const prefix = TRANSLATIONS[currentLang].countdown_prefix;
         DOM.text.countdown.textContent = `${prefix}${seconds}...`;
@@ -503,7 +525,14 @@ function updateLanguage() {
 
     if (DOM.inputs.curso.options[0]) DOM.inputs.curso.options[0].text = t.select_course;
     if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
+    if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
     if (DOM.inputs.alumno.options[0]) DOM.inputs.alumno.options[0].text = t.select_student;
+
+    // Update Action Buttons
+    const btnYesText = document.querySelector('#btn-yes .text');
+    const btnNoText = document.querySelector('#btn-no .text');
+    if (btnYesText) btnYesText.textContent = t.btn_yes;
+    if (btnNoText) btnNoText.textContent = t.btn_no;
 }
 
 function getRandomMessage(streak) {
