@@ -183,7 +183,10 @@ header h1 {
     letter-spacing: 0;
     cursor: pointer;
     transition: transform 0.2s ease;
-    white-space: nowrap;
+    white-space: normal;
+    /* Allow wrapping */
+    line-height: 1.1;
+    padding: 0 10px;
 }
 
 /* Estrellas doradas con borde negro */
@@ -918,7 +921,8 @@ select:disabled {
 }
 
 .highlight-name {
-    display: block;
+    display: inline;
+    /* Keep on same line */
     font-size: clamp(1.5rem, 4vw, 2.2rem);
     /* Reduced size */
     color: #0077aa;
@@ -1215,15 +1219,13 @@ select:disabled {
 }
 
 .countdown-text {
-    font-size: 0.9rem;
-    color: #666;
-    /* Gray */
+    font-size: 1rem;
+    color: #000;
+    /* Pure black for visibility */
     margin-top: auto;
-    /* Push to bottom */
-    margin-bottom: 10px;
-    font-weight: 500;
-    /* Non-bold */
-    text-shadow: none;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 @media (min-width: 768px) {

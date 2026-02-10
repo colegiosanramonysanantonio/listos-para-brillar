@@ -319,10 +319,10 @@ function setupEventListeners() {
         const firstName = selectedStudent.nombre.split(' ')[0];
         const t = TRANSLATIONS[currentLang];
         DOM.text.greeting.innerHTML = `
-            ${t.greeting_prefix} <span class="highlight-name" style="font-size: clamp(2rem, 5vw, 3rem)">${firstName}</span>! ✨
-            <br>
-            <span class="question-text">${t.question}</span>
-        `;
+                    ${t.greeting_prefix}<span class="highlight-name" style="font-size: clamp(2rem, 5vw, 3rem)">${firstName}</span>! ✨
+                    <br>
+                    <span class="question-text">${t.question}</span>
+                `;
     });
 
     DOM.buttons.back.addEventListener('click', () => {
