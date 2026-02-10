@@ -1,14 +1,16 @@
 ﻿/**
- * App "Cepillos" - Frontend Logic v6
- * - Backend Streak Sync
- * - Optimistic UI
- * - Fixed Translations
- * - Correct Countdown
+ * App "Cepillos" - Frontend Logic v7
+ * - New API URL (GAS v2)
+ * - Valid Race URL
+ * - Full Translations (Labels + Placeholders)
+ * - Text Overflow Fixes
  */
 
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbyuZlGw3PGWyPgqjUWXGyXb95gCdyECtoNw5ECYSCmjP7WiAs-pqCbaDV2FvKH-i6Rt/exec',
-    RACE_URL: 'https://docs.google.com/spreadsheets/d/1Z_u8zXn2wT3q5PgL4I0nOqJ0pZ6dK2yG/edit?usp=sharing',
+    // New Script URL provided by user
+    API_URL: 'https://script.google.com/macros/s/AKfycbwxBRZgZCj_mpKb8Oi7YFKHooQtpCxVUWoJUjOO1kgakU30SfJvKEVhc2922Ep-qnx9/exec',
+    // Valid Public HTML URL
+    RACE_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqATu00puJjw5dIDtsB4QWDusNCMhCWUj8ghcF45PMJMbJxuCt7fdqb2LSPLhYuaN8o8SJNFIqeiwC/pubhtml',
     OFFLINE_KEY: 'cepillos_offline_records',
     STUDENTS_CACHE_KEY: 'cepillos_students_cache',
     ADMIN_PIN: '1926'
@@ -17,12 +19,15 @@ const CONFIG = {
 const TRANSLATIONS = {
     es: {
         loading: 'Cargando...',
+        label_course: '🏫 Curso',
+        label_group: '👥 Grupo',
+        label_student: '👤 ¿Quién eres?',
         select_course: 'Selecciona curso...',
         select_group: 'Selecciona grupo...',
         select_student: 'Busca tu nombre...',
         btn_next: 'Siguiente 👉',
         greeting_prefix: '¡Hola, ',
-        question: '¿Hoy te has lavado los dientes?',
+        question: '¿Te has lavado los dientes hoy?',
         streak_days: 'días',
         success_title: '¡Genial!',
         offline_mode: 'Modo sin conexión 📡',
@@ -34,6 +39,9 @@ const TRANSLATIONS = {
     },
     en: {
         loading: 'Loading...',
+        label_course: '🏫 Grade',
+        label_group: '👥 Class',
+        label_student: '👤 Who are you?',
         select_course: 'Select grade...',
         select_group: 'Select class...',
         select_student: 'Find your name...',
@@ -54,7 +62,7 @@ const TRANSLATIONS = {
 let currentLang = 'es';
 let studentData = null;
 let selectedStudent = { curso: '', grupo: '', nombre: '' };
-let currentStreakValue = 0; // Store streak from backend
+let currentStreakValue = 0;
 
 const DOM = {
     screens: {
@@ -70,6 +78,11 @@ const DOM = {
         alumno: document.getElementById('select-alumno'),
         fgGrupo: document.getElementById('fg-grupo'),
         fgAlumno: document.getElementById('fg-alumno')
+    },
+    labels: {
+        curso: document.getElementById('label-curso'),
+        grupo: document.getElementById('label-grupo'),
+        alumno: document.getElementById('label-alumno')
     },
     buttons: {
         next: document.getElementById('btn-next'),
@@ -94,21 +107,20 @@ const DOM = {
 };
 
 function initApp() {
-    console.log('App v6 Initializing...');
+    console.log('App v7 Initializing...');
     loadStudentData();
     setupEventListeners();
     updateLanguage();
     syncOfflineRecords();
 }
 
-// Data Loading
 async function loadStudentData() {
     try {
         const option = document.createElement('option');
         option.text = TRANSLATIONS[currentLang].loading;
         DOM.inputs.curso.add(option);
 
-        const response = await fetch(`${CONFIG.API_URL}?type=alumnado`); // Force type if needed, or default
+        const response = await fetch(`${CONFIG.API_URL}?type=alumnado`);
         if (!response.ok) throw new Error('Network response was not ok');
 
         studentData = await response.json();
@@ -131,7 +143,6 @@ async function loadStudentData() {
 }
 
 function populateCursos() {
-    // Always use translation for default option
     DOM.inputs.curso.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_course}</option>`;
     if (!studentData) return;
 
@@ -143,11 +154,9 @@ function populateCursos() {
     });
 }
 
-// Fetch Streak from Backend
 async function fetchStreak(curso, grupo, alumno) {
-    if (!navigator.onLine) return 0; // Return 0 or local estimate if offline
+    if (!navigator.onLine) return 0;
     try {
-        // Construct URL properly
         const url = `${CONFIG.API_URL}?type=streak&curso=${encodeURIComponent(curso)}&grupo=${encodeURIComponent(grupo)}&alumno=${encodeURIComponent(alumno)}`;
         const res = await fetch(url);
         const data = await res.json();
@@ -231,9 +240,8 @@ function setupEventListeners() {
             DOM.buttons.next.classList.remove('hidden');
             DOM.buttons.next.disabled = false;
 
-            // Background fetch streak to be ready
+            // Background fetch streak
             currentStreakValue = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
-            console.log('Pre-fetched streak:', currentStreakValue);
         } else {
             DOM.buttons.next.classList.add('hidden');
             DOM.buttons.next.disabled = true;
@@ -246,13 +254,8 @@ function setupEventListeners() {
         showScreen('action');
         const firstName = selectedStudent.nombre.split(' ')[0];
         const t = TRANSLATIONS[currentLang];
-        DOM.text.greeting.textContent = `${t.greeting_prefix}${firstName}!`;
-        // Ensure question text matches lang
-        const qEl = document.querySelector('#action-screen h2');
-        // Actually greeting is the h2, so we append name to prefix? 
-        // Logic check: in DOM ref, greeting-name IS the h2. structure: <h2>¿Hoy te has...</h2> 
-        // Wait, init says greeting-name. Let's force reset content.
-        DOM.text.greeting.innerHTML = `<span style="display:block;font-size:0.8em">${t.greeting_prefix}${firstName}!</span>${t.question}`;
+        // Ensure greeting is split correctly to avoid overflow
+        DOM.text.greeting.innerHTML = `<span style="display:block;font-size:0.9em;margin-bottom:10px">${t.greeting_prefix}${firstName}!</span>${t.question}`;
     });
 
     DOM.buttons.back.addEventListener('click', () => {
@@ -306,11 +309,10 @@ function handleRegister(estado) {
     if (estado === 'Sí') {
         playSound('bling');
         confettiEffect();
-        currentStreakValue++; // Optimistic increment
+        currentStreakValue++;
         showSuccessScreen(currentStreakValue);
     } else {
         playSound('pop');
-        // Brief delay before reset
         setTimeout(() => resetApp(), 500);
     }
 
@@ -322,7 +324,6 @@ function handleRegister(estado) {
         estado: estado
     };
 
-    // Send Data
     const send = async () => {
         if (navigator.onLine) {
             try {
@@ -352,13 +353,12 @@ function showSuccessScreen(streak) {
     if (streak >= 11) level = 3;
     DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
-    // Countdown Fixed
     let seconds = 5;
     const updateCountdown = () => {
         const prefix = TRANSLATIONS[currentLang].countdown_prefix;
         DOM.text.countdown.textContent = `${prefix}${seconds}...`;
     };
-    updateCountdown(); // Show immediate "5"
+    updateCountdown();
 
     const interval = setInterval(() => {
         seconds--;
@@ -430,7 +430,12 @@ function updateLanguage() {
     DOM.buttons.adminClose.innerHTML = t.btn_admin_back;
     DOM.buttons.next.innerHTML = t.btn_next;
 
-    // Force update placeholder texts
+    // Update Label Text
+    if (DOM.labels.curso) DOM.labels.curso.textContent = t.label_course;
+    if (DOM.labels.grupo) DOM.labels.grupo.textContent = t.label_group;
+    if (DOM.labels.alumno) DOM.labels.alumno.textContent = t.label_student;
+
+    // Update Selects (Force)
     if (DOM.inputs.curso.options[0]) DOM.inputs.curso.options[0].text = t.select_course;
     if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
     if (DOM.inputs.alumno.options[0]) DOM.inputs.alumno.options[0].text = t.select_student;
@@ -456,7 +461,6 @@ function showToast(msg, type) {
     setTimeout(() => t.className = 'toast', 3000);
 }
 
-// Audio logic remains same
 let audioCtx = null;
 function playSound(type) {
     try {
@@ -471,11 +475,11 @@ function playSound(type) {
         } else if (type === 'bubble') {
             osc.frequency.setValueAtTime(400, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); osc.start(); osc.stop(audioCtx.currentTime + 0.15);
         } else if (type === 'bling') {
-            osc.frequency.setValueAtTime(523, audioCtx.currentTime); oscillator = osc; // simplified
+            osc.frequency.setValueAtTime(523, audioCtx.currentTime); oscillator = osc;
             osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
     } catch (e) { }
 }
-const confettiEffect = () => { /* ... same confetti ... */ };
+const confettiEffect = () => { /* ... */ };
 
 document.addEventListener('DOMContentLoaded', initApp);
