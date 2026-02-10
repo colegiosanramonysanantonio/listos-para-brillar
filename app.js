@@ -413,9 +413,15 @@ function handleRegister(estado) {
 
 function showSuccessScreen(streak) {
     showScreen('success');
-    DOM.text.streakDays.textContent = streak;
-    DOM.text.streakLabel.textContent = TRANSLATIONS[currentLang].streak_days;
-    DOM.text.streakMessage.textContent = getRandomMessage(streak);
+    showScreen('success');
+
+    // Gramática Correcta
+    const label = streak === 1 ? 'DÍA' : 'DÍAS';
+
+    // Impact Message Logic
+    DOM.text.streakDays.innerHTML = `${streak} <span style="font-size:0.5em">${label}</span><br>¡SIGUE ASÍ!`;
+    DOM.text.streakLabel.textContent = ''; // Hidden by CSS anyway
+    DOM.text.streakMessage.textContent = '¡DIENTES LIMPIOS!';
 
     let level = 1;
     if (streak >= 4) level = 2;
