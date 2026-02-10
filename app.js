@@ -64,7 +64,11 @@ const TRANSLATIONS = {
         btn_back_home: 'Back to Home',
         btn_yes: 'Yes, shiny! ✨',
         btn_no: 'Go Back',
-        btn_admin_back: '⬅️ Exit Panel'
+        btn_admin_back: '⬅️ Exit Panel',
+        countdown_prefix: 'Returning in ',
+        race_title: '🏆 The Great Race',
+        race_subtitle: 'Which grade is leading?',
+        race_loading: 'Calculating positions... 🏎️💨'
     }
 };
 
