@@ -1,0 +1,13 @@
+# Dependencias
+node_modules/
+
+# Archivos de sistema
+Thumbs.db
+Desktop.ini
+
+# Editores
+.vscode/
+*.code-workspace
+
+# Antigravity
+.gemini/

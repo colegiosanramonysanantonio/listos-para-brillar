@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cepillos App - Control de Higiene Dental</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-wrapper">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div id="app" class="container">
+        <!-- Dashboard de Logros (Solo en selección) -->
+        <div id="achievements-bar" class="achievements-bar">
+            <span>Hoy:</span>
+            <span class="medal bronze">🥉</span>
+            <span class="medal silver">🥈</span>
+            <span class="medal gold">🥇</span>
+        </div>
+
+        <div class="app-header-actions">
+            <button id="btn-lang-toggle">🇬🇧 EN</button>
+            <button id="btn-admin-access" class="btn-icon">⚙️</button>
+        </div>
+
+        <!-- Pantalla de Bienvenida/Selección -->
+        <section id="selection-screen" class="screen">
+            <header>
+                <h1>✨ ¡Listos para brillar! ✨</h1>
+                <p>Elige tu nombre para empezar</p>
+            </header>
+
+            <div class="selection-grid">
+                <div class="form-group">
+                    <label>🏫 Curso</label>
+                    <select id="select-curso">
+                        <option value="">Selecciona curso...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>👥 Clase/Grupo</label>
+                    <select id="select-grupo" disabled>
+                        <option value="">Selecciona grupo...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>👤 ¿Quién eres?</label>
+                    <select id="select-alumno" disabled>
+                        <option value="">Busca tu nombre...</option>
+                    </select>
+                </div>
+
+                <button id="btn-next" class="btn btn-main btn-pulse" disabled>
+                    Siguiente 👉
+                </button>
+
+                <button id="btn-show-race" class="btn btn-link">
+                    Ver Carrera 🏆
+                </button>
+            </div>
+        </section>
+
+        <!-- Pantalla de Acción -->
+        <section id="action-screen" class="screen hidden">
+            <header>
+                <h2 id="greeting-name">¿Hoy te has lavado los dientes?</h2>
+            </header>
+            <div class="action-buttons grid-2">
+                <button id="btn-yes" class="btn btn-action btn-success">
+                    <span class="icon">✅</span>
+                    <span class="text">¡Hecho!</span>
+                </button>
+                <button id="btn-no" class="btn btn-action btn-danger">
+                    <span class="icon">❌</span>
+                    <span class="text">Aún no...</span>
+                </button>
+            </div>
+            <button id="btn-back" class="btn btn-link">⬅️ Volver atrás</button>
+        </section>
+
+        <!-- Pantalla de Éxito -->
+        <section id="success-screen" class="screen hidden">
+            <div class="centered-content">
+                <div class="success-animation">
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="sparkle"></div>
+                    <div class="icon-glow">✨</div>
+                </div>
+                <h2 id="success-msg">¡Genial, gracias por registrarte!</h2>
+                <p id="countdown-text">Volviendo al inicio en 3 segundos...</p>
+            </div>
+        </section>
+
+        <!-- Pantalla de La Gran Carrera -->
+        <section id="race-screen" class="screen hidden">
+            <header>
+                <h1>🏆 La Gran Carrera</h1>
+                <p>¿Qué curso llegará primero a la meta?</p>
+            </header>
+            <div id="race-container" class="race-list">
+                <!-- Las barras se cargarán dinámicamente -->
+                <div class="loading-race">Calculando posiciones... 🏎️💨</div>
+            </div>
+            <button id="btn-race-back" class="btn btn-main">Volver al Registro</button>
+        </section>
+
+        <!-- Pantalla de Administración -->
+        <section id="admin-screen" class="screen hidden">
+            <header>
+                <h2>Panel Profe</h2>
+            </header>
+            <div id="admin-stats-content" class="centered-content">
+                <!-- Estadísticas cargadas dinámicamente -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
