@@ -415,13 +415,15 @@ function showSuccessScreen(streak) {
     showScreen('success');
     showScreen('success');
 
-    // Gramática Correcta
+    // Updated Logic for Redesign
     const label = streak === 1 ? 'DÍA' : 'DÍAS';
 
-    // Impact Message Logic
-    DOM.text.streakDays.innerHTML = `${streak} <span style="font-size:0.5em">${label}</span><br>¡SIGUE ASÍ!`;
-    DOM.text.streakLabel.textContent = ''; // Hidden by CSS anyway
-    DOM.text.streakMessage.textContent = '¡DIENTES LIMPIOS!';
+    // Counter: Number + Label (Yellow/Bold defined in CSS)
+    DOM.text.streakDays.innerHTML = `${streak}<br><span style="font-size:0.4em">${label}</span>`;
+
+    // Message: "¡SIGUE ASÍ!" (Black/Bold defined in CSS)
+    DOM.text.streakMessage.textContent = '¡SIGUE ASÍ!';
+    DOM.text.streakLabel.textContent = '';
 
     let level = 1;
     if (streak >= 4) level = 2;
