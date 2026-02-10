@@ -1,9 +1,8 @@
 ﻿/**
- * App "Cepillos" - Frontend Logic v8
- * - Internal Race Screen (Restored)
- * - Header Buttons Logic (Hidden on Action/Success)
- * - Full Translations (Intro Title/Subtitle)
- * - Streak Fix logic handled in Backend
+ * App "Cepillos" - Frontend Logic v9
+ * - Fix: Streak Double Counting (Check includesToday from backend)
+ * - Internal Race Screen
+ * - Clean UI
  */
 
 const CONFIG = {
@@ -71,7 +70,7 @@ const TRANSLATIONS = {
 let currentLang = 'es';
 let studentData = null;
 let selectedStudent = { curso: '', grupo: '', nombre: '' };
-let currentStreakValue = 0;
+let currentStreakData = { value: 0, includesToday: false }; // Changed to object
 
 const DOM = {
     screens: {
@@ -125,7 +124,7 @@ const DOM = {
 };
 
 function initApp() {
-    console.log('App v8 Initializing...');
+    console.log('App v9 Initializing...');
     loadStudentData();
     setupEventListeners();
     updateLanguage();
@@ -172,16 +171,19 @@ function populateCursos() {
     });
 }
 
-// Fetch Streak (updated V8, same logic, relies on backend fix)
+// Fetch Streak - Now returns object
 async function fetchStreak(curso, grupo, alumno) {
-    if (!navigator.onLine) return 0;
+    if (!navigator.onLine) return { value: 0, includesToday: false };
     try {
         const url = `${CONFIG.API_URL}?type=streak&curso=${encodeURIComponent(curso)}&grupo=${encodeURIComponent(grupo)}&alumno=${encodeURIComponent(alumno)}`;
         const res = await fetch(url);
         const data = await res.json();
-        return data.streak || 0;
+        return {
+            value: data.streak || 0,
+            includesToday: data.includesToday || false
+        };
     } catch (e) {
-        return 0;
+        return { value: 0, includesToday: false };
     }
 }
 
@@ -197,7 +199,6 @@ async function loadRace() {
             return;
         }
 
-        // Find max points for scaling
         const maxPoints = Math.max(...ranking.map(r => r.points));
 
         ranking.forEach((r, index) => {
@@ -294,7 +295,7 @@ function setupEventListeners() {
         if (selectedStudent.nombre) {
             DOM.buttons.next.classList.remove('hidden');
             DOM.buttons.next.disabled = false;
-            currentStreakValue = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
+            currentStreakData = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
         } else {
             DOM.buttons.next.classList.add('hidden');
             DOM.buttons.next.disabled = true;
@@ -314,7 +315,6 @@ function setupEventListeners() {
         showScreen('selection');
     });
 
-    // Race Button (Internal)
     DOM.buttons.race.addEventListener('click', () => {
         playSound('bubble');
         showScreen('race');
@@ -355,8 +355,16 @@ function handleRegister(estado) {
     if (estado === 'Sí') {
         playSound('bling');
         confettiEffect();
-        currentStreakValue++;
-        showSuccessScreen(currentStreakValue);
+
+        // Correct Streak Logic:
+        // If today is NOT already included in the server streak, we add 1.
+        // If it IS included (because we already synced or checked), we show the server value.
+        let displayStreak = currentStreakData.value;
+        if (!currentStreakData.includesToday) {
+            displayStreak++;
+        }
+
+        showSuccessScreen(displayStreak);
     } else {
         playSound('pop');
         setTimeout(() => resetApp(), 500);
@@ -421,9 +429,6 @@ function showScreen(screenName) {
     Object.values(DOM.screens).forEach(el => el.classList.add('hidden'));
     DOM.screens[screenName].classList.remove('hidden');
 
-    // UI Overlap Fix: Hide header buttons on Action/Success screens
-    // Show only on Selection and Race (maybe?)
-    // User requested "disappear from that screen (action) and final (success)"
     if (screenName === 'action' || screenName === 'success') {
         DOM.headers.left.style.display = 'none';
         DOM.headers.right.style.display = 'none';
