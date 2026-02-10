@@ -824,9 +824,18 @@ select:disabled {
 }
 
 .race-label {
-    min-width: 40px;
+    min-width: 80px;
     font-weight: 700;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
+    white-space: nowrap;
+}
+
+.medal-icon {
+    font-size: 1.4rem;
 }
 
 .race-bar {
