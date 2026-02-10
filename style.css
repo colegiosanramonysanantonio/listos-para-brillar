@@ -845,28 +845,27 @@ select:disabled {
     box-shadow: 0 5px 20px rgba(241, 39, 17, 0.4);
 }
 
+/* ========== RACE BAR SPECIFIC COLORS ========== */
+/* Using !important to FORCE override any other styles */
 .race-bar.gold {
-    background: linear-gradient(90deg, #ffd700, #ffeb3b);
-    /* Yellow/Gold */
-    box-shadow: 0 0 10px #ffd700;
-    color: #5c4d00;
-    border: 2px solid #b8860b;
+    background: linear-gradient(90deg, #ffd700, #ffeb3b) !important;
+    box-shadow: 0 0 15px gold !important;
+    color: #5c4d00 !important;
+    border: 2px solid #b8860b !important;
 }
 
 .race-bar.silver {
-    background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
-    /* Silver/Grey */
-    box-shadow: 0 0 10px #c0c0c0;
-    color: #4a4a4a;
-    border: 2px solid #808080;
+    background: linear-gradient(90deg, #c0c0c0, #e0e0e0) !important;
+    box-shadow: 0 0 15px silver !important;
+    color: #333 !important;
+    border: 2px solid #808080 !important;
 }
 
 .race-bar.bronze {
-    background: linear-gradient(90deg, #cd7f32, #d2691e);
-    /* Bronze/Brown */
-    box-shadow: 0 0 10px #cd7f32;
-    color: white;
-    border: 2px solid #8b4513;
+    background: linear-gradient(90deg, #cd7f32, #d2691e) !important;
+    box-shadow: 0 0 15px #cd7f32 !important;
+    color: white !important;
+    border: 2px solid #8b4513 !important;
 }
 
 #race-screen {
