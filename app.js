@@ -7,7 +7,7 @@
  */
 
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/AKfycbwxBRZgZCj_mpKb8Oi7YFKHooQtpCxVUWoJUjOO1kgakU30SfJvKEVhc2922Ep-qnx9/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbzg-Oub3EmB1MZ4xH2HhUYn4QXyS82NMJsVXjowx_m17iAfFXNCbHqomrp-Sg5ePWNp/exec',
     OFFLINE_KEY: 'cepillos_offline_records',
     STUDENTS_CACHE_KEY: 'cepillos_students_cache',
     ADMIN_PIN: '1926'
