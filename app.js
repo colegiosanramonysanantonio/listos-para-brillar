@@ -413,7 +413,6 @@ function handleRegister(estado) {
 
 function showSuccessScreen(streak) {
     showScreen('success');
-    showScreen('success');
 
     // Updated Logic for Redesign
     const label = streak === 1 ? 'DÍA' : 'DÍAS';
@@ -421,9 +420,20 @@ function showSuccessScreen(streak) {
     // Counter: Number + Label (Yellow/Bold defined in CSS)
     DOM.text.streakDays.innerHTML = `${streak}<br><span style="font-size:0.4em">${label}</span>`;
 
-    // Message: "¡SIGUE ASÍ!" (Black/Bold defined in CSS)
-    DOM.text.streakMessage.textContent = '¡SIGUE ASÍ!';
-    DOM.text.streakLabel.textContent = '';
+    // Message: Random Selection (Black/Bold defined in CSS)
+    const MESSAGES = [
+        "¡SIGUE ASÍ!",
+        "¡MUY BIEN!",
+        "¡FANTASTICO!",
+        "¡GENIAL!",
+        "¡INCREÍBLE!",
+        "¡SUPER!",
+        "¡BRILLANTE!",
+        "¡ASOMBROSO!"
+    ];
+    const randomMsg = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+    DOM.text.streakMessage.textContent = randomMsg;
+    DOM.text.streakLabel.textContent = ''; // Hidden mainly by CSS
 
     let level = 1;
     if (streak >= 4) level = 2;
