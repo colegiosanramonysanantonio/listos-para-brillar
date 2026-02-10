@@ -824,18 +824,26 @@ select:disabled {
 }
 
 .race-label {
-    min-width: 80px;
+    min-width: 90px;
     font-weight: 700;
     font-size: 1.2rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 40px 1fr;
     align-items: center;
-    justify-content: flex-end;
-    gap: 30px;
+    gap: 10px;
     white-space: nowrap;
 }
 
-.medal-icon {
+.medal-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
     font-size: 1.4rem;
+}
+
+.course-name {
+    text-align: right;
 }
 
 .race-bar {

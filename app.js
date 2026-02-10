@@ -215,8 +215,8 @@ async function loadRace() {
 
             row.innerHTML = `
                 <div class="race-label">
+                    <div class="medal-wrapper">${medal ? medal : ''}</div>
                     <span class="course-name">${r.clase}</span>
-                    ${medal ? `<span class="medal-icon">${medal}</span>` : ''}
                 </div>
                 <div class="race-bar ${rankClass}" style="width: ${Math.max(widthPct, 10)}%;">
                     ${r.points}
