@@ -1,8 +1,9 @@
 ﻿/**
- * App "Cepillos" - Frontend Logic v9
- * - Fix: Streak Double Counting (Check includesToday from backend)
- * - Internal Race Screen
- * - Clean UI
+ * App "Cepillos" - Frontend Logic v12
+ * - Fix: Syntax Errors
+ * - Feature: Gamification (Gold/Silver/Bronze)
+ * - Feature: Variable Timers
+ * - Feature: Action Screen Correction Logic
  */
 
 const CONFIG = {
@@ -62,22 +63,15 @@ const TRANSLATIONS = {
         btn_race: 'See Race 🏆',
         btn_back_home: 'Back to Home',
         btn_yes: 'Yes, shiny! ✨',
-        btn_no: 'Go Back'
-    }
-};
-btn_admin_back: '⬅️ Exit Panel',
-    countdown_prefix: 'Returning in ',
-        race_title: '🏆 The Great Race',
-            race_subtitle: 'Which grade is leading?',
-                race_loading: 'Calculating positions... 🏎️💨',
-                    btn_back_home: 'Back to Home'
+        btn_no: 'Go Back',
+        btn_admin_back: '⬅️ Exit Panel'
     }
 };
 
 let currentLang = 'es';
 let studentData = null;
 let selectedStudent = { curso: '', grupo: '', nombre: '' };
-let currentStreakData = { value: 0, includesToday: false }; // Changed to object
+let currentStreakData = { value: 0, includesToday: false };
 
 const DOM = {
     screens: {
@@ -131,7 +125,7 @@ const DOM = {
 };
 
 function initApp() {
-    console.log('App v9 Initializing...');
+    console.log('App v12 Initializing...');
     loadStudentData();
     setupEventListeners();
     updateLanguage();
@@ -178,7 +172,6 @@ function populateCursos() {
     });
 }
 
-// Fetch Streak - Now returns object
 async function fetchStreak(curso, grupo, alumno) {
     if (!navigator.onLine) return { value: 0, includesToday: false };
     try {
@@ -213,11 +206,16 @@ async function loadRace() {
             row.className = 'race-bar-wrapper';
 
             const widthPct = maxPoints > 0 ? (r.points / maxPoints) * 100 : 0;
-            const isLeader = index === 0;
+
+            let rankClass = '';
+            let medal = '';
+            if (index === 0) { rankClass = 'gold'; medal = '🥇'; }
+            else if (index === 1) { rankClass = 'silver'; medal = '🥈'; }
+            else if (index === 2) { rankClass = 'bronze'; medal = '🥉'; }
 
             row.innerHTML = `
-                <div class="race-label">${r.clase}</div>
-                <div class="race-bar ${isLeader ? 'leader' : ''}" style="width: ${Math.max(widthPct, 10)}%;">
+                <div class="race-label">${medal} ${r.clase}</div>
+                <div class="race-bar ${rankClass}" style="width: ${Math.max(widthPct, 10)}%;">
                     ${r.points}
                 </div>
             `;
@@ -231,7 +229,6 @@ async function loadRace() {
 }
 
 function setupEventListeners() {
-    // Selection Flow
     DOM.inputs.curso.addEventListener('change', e => {
         playSound('pop');
         const curso = e.target.value;
@@ -367,44 +364,44 @@ function handleRegister(estado) {
         playSound('bling');
         confettiEffect();
 
-        // Correct Streak Logic:
-        // If today is NOT already included in the server streak, we add 1.
-        // If it IS included (because we already synced or checked), we show the server value.
         let displayStreak = currentStreakData.value;
         if (!currentStreakData.includesToday) {
             displayStreak++;
         }
 
         showSuccessScreen(displayStreak);
-    } else {
-        playSound('pop');
-        setTimeout(() => resetApp(), 500);
-    }
 
-    const record = {
-        fecha: new Date().toISOString(),
-        curso: selectedStudent.curso,
-        grupo: selectedStudent.grupo,
-        alumno: selectedStudent.nombre,
-        estado: estado
-    };
+        const record = {
+            fecha: new Date().toISOString(),
+            curso: selectedStudent.curso,
+            grupo: selectedStudent.grupo,
+            alumno: selectedStudent.nombre,
+            estado: estado
+        };
 
-    const send = async () => {
-        if (navigator.onLine) {
-            try {
-                await fetch(CONFIG.API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify(record)
-                });
-            } catch (e) {
+        const send = async () => {
+            if (navigator.onLine) {
+                try {
+                    await fetch(CONFIG.API_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify(record)
+                    });
+                } catch (e) {
+                    saveOffline(record);
+                }
+            } else {
                 saveOffline(record);
             }
-        } else {
-            saveOffline(record);
-        }
-    };
-    send();
+        };
+        send();
+    } else {
+        // "No" is now "Volver atrás" (Correction)
+        playSound('pop');
+        showScreen('selection');
+        DOM.buttons.yes.disabled = false;
+        DOM.buttons.no.disabled = false;
+    }
 }
 
 function showSuccessScreen(streak) {
@@ -418,8 +415,6 @@ function showSuccessScreen(streak) {
     if (streak >= 11) level = 3;
     DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
-    DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
-
     // Variable Timer Logic
     let seconds = 5; // Default
     const curso = selectedStudent.curso;
@@ -430,6 +425,7 @@ function showSuccessScreen(streak) {
     } else if (curso.startsWith('5') || curso.startsWith('6')) {
         seconds = 5;
     }
+
     const updateCountdown = () => {
         const prefix = TRANSLATIONS[currentLang].countdown_prefix;
         DOM.text.countdown.textContent = `${prefix}${seconds}...`;
@@ -524,7 +520,6 @@ function updateLanguage() {
     if (DOM.labels.alumno) DOM.labels.alumno.textContent = t.label_student;
 
     if (DOM.inputs.curso.options[0]) DOM.inputs.curso.options[0].text = t.select_course;
-    if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
     if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
     if (DOM.inputs.alumno.options[0]) DOM.inputs.alumno.options[0].text = t.select_student;
 
