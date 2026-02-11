@@ -1103,6 +1103,14 @@ select:disabled {
         0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
+.btn-danger:active {
+    background: #cc0000;
+    /* Darker Link Red */
+    border-color: #b30000;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
 /* Admin Panel Styles */
 .admin-menu {
     display: flex;
