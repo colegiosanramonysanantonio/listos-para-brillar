@@ -696,35 +696,33 @@ select:disabled {
     }
 }
 
-/* Tablets en vertical: tarjeta más estrecha para ver más fondo */
+/* Tablets en vertical: tarjeta más ancha y estética */
 @media (max-width: 768px) and (orientation: portrait) {
     .container {
-        max-width: 75%;
-        padding: 15px 20px 10px;
+        max-width: 90%;
+        padding: 30px 25px;
     }
 
     .school-logo {
-        width: 100px;
+        width: 110px;
     }
 
     .mascot-inline {
-        width: 160px;
-        margin-top: -10px;
+        width: 180px;
     }
 
-    .header-icons {
-        gap: 2px;
-        margin-bottom: 3px;
+    /* Botones más grandes en tablet */
+    .btn-action {
+        height: 110px;
+    }
+
+    .btn-action .text {
+        font-size: 1.4rem;
     }
 
     header h1 {
-        font-size: 1.5rem;
-        padding: 0 45px;
-    }
-
-    header p {
-        font-size: 0.85rem;
-        margin-bottom: 8px;
+        font-size: 2rem;
+        padding: 0 10px;
     }
 }
 
@@ -748,6 +746,59 @@ select:disabled {
     header h2 {
         font-size: 1.8rem;
     }
+}
+
+.streak-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    margin-top: -20px;
+    margin-bottom: 25px;
+    /* Added separation from message */
+}
+
+.streak-counter #streak-days {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(5rem, 18vw, 9rem);
+    font-weight: 900;
+    color: #FFD700;
+    line-height: 0.8;
+    /* Tighter line height for number */
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    text-shadow:
+        3px 3px 0 #000,
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        0 5px 15px rgba(0, 0, 0, 0.4);
+    animation: count-pop 0.6s ease-out 1s both;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.streak-counter .streak-label {
+    display: none;
+}
+
+.streak-message {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    font-weight: 900;
+    color: #000000;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    margin-top: 0;
+    max-width: 100%;
+    text-transform: uppercase;
+    animation: count-pop 0.6s ease-out 1.2s both;
+    line-height: 1;
 }
 
 /* Achievements Bar */

@@ -418,7 +418,8 @@ function showSuccessScreen(streak) {
     const label = streak === 1 ? 'DÍA' : 'DÍAS';
 
     // Counter: Number + Label (Yellow/Bold defined in CSS)
-    DOM.text.streakDays.innerHTML = `${streak}<br><span style="font-size:0.4em">${label}</span>`;
+    // Using divs and line-height control to bring "DÍAS" closer to number
+    DOM.text.streakDays.innerHTML = `<div style="line-height:0.8">${streak}</div><div style="font-size:0.35em; line-height:1; margin-top:-10px">${label}</div>`;
 
     // Messages Adapted by Course Level (User Specific List)
     const MESSAGES_LOWER = [
