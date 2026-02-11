@@ -377,7 +377,9 @@ function handleRegister(estado) {
             displayStreak++;
         }
 
-        showSuccessScreen(displayStreak);
+        setTimeout(() => {
+            showSuccessScreen(displayStreak);
+        }, 500); // Wait 0.5s to see the green button
 
         const record = {
             fecha: new Date().toISOString(),
