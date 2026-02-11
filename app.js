@@ -53,7 +53,11 @@ const TRANSLATIONS = {
             "<span class='emoji-small'>💡</span> Hoy iluminas la clase",
             "<span class='emoji-small'>🔆</span> Has encendido tu sonrisa",
             "<span class='emoji-small'>🎯</span> Misión dientes limpios: superada"
-        ]
+        ],
+        streak_day_singular: 'DÍA',
+        streak_day_plural: 'DÍAS',
+        btn_back_generic: '⬅️ Volver atrás',
+        class_prefix: 'Clase '
     },
     en: {
         loading: 'Loading...',
@@ -93,7 +97,11 @@ const TRANSLATIONS = {
             "<span class='emoji-small'>💡</span> You light up the class today",
             "<span class='emoji-small'>🔆</span> You ignited your smile",
             "<span class='emoji-small'>🎯</span> Mission clean teeth: accomplished"
-        ]
+        ],
+        streak_day_singular: 'DAY',
+        streak_day_plural: 'DAYS',
+        btn_back_generic: '⬅️ Go Back',
+        class_prefix: 'Class '
     }
 };
 
@@ -286,7 +294,10 @@ function setupEventListeners() {
             Object.keys(grupos).forEach(grupo => {
                 const opt = document.createElement('option');
                 opt.value = grupo;
-                opt.text = (grupo === 'ÚNICO' || grupo === 'UNICO') ? 'Único' : `Clase ${grupo}`;
+
+                const prefix = TRANSLATIONS[currentLang].class_prefix;
+                // Dynamically translate label
+                opt.text = (grupo === 'ÚNICO' || grupo === 'UNICO') ? (currentLang === 'es' ? 'Único' : 'Unique') : `${prefix}${grupo}`;
                 DOM.inputs.grupo.add(opt);
             });
 
@@ -442,8 +453,9 @@ function handleRegister(estado) {
 function showSuccessScreen(streak) {
     showScreen('success');
 
-    // Updated Logic for Redesign
-    const label = streak === 1 ? 'DÍA' : 'DÍAS';
+    // Updated Logic for Redesign with Translations
+    const t = TRANSLATIONS[currentLang];
+    const label = streak === 1 ? t.streak_day_singular : t.streak_day_plural;
 
     // Counter: Number + Label (Yellow/Bold defined in CSS)
     // Using divs and line-height control to bring "DÍAS" closer to number
@@ -451,7 +463,6 @@ function showSuccessScreen(streak) {
 
     // Messages Adapted by Course Level (User Specific List)
     // Now using TRANSLATIONS object based on currentLang
-    const t = TRANSLATIONS[currentLang];
     const MESSAGES_LOWER = t.messages_lower;
     const MESSAGES_UPPER = t.messages_upper;
 
@@ -596,8 +607,11 @@ function updateLanguage() {
     // Update Action Buttons
     const btnYesText = document.querySelector('#btn-yes .text');
     const btnNoText = document.querySelector('#btn-no .text');
+    const btnBackGeneric = document.getElementById('btn-back');
+
     if (btnYesText) btnYesText.textContent = t.btn_yes;
     if (btnNoText) btnNoText.textContent = t.btn_no;
+    if (btnBackGeneric) btnBackGeneric.textContent = t.btn_back_generic;
 }
 
 function getRandomMessage(streak) {

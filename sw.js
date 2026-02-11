@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cepillos-v22';
+﻿const CACHE_NAME = 'cepillos-v23';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
