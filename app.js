@@ -423,17 +423,17 @@ function showSuccessScreen(streak) {
 
     // Messages Adapted by Course Level (User Specific List)
     const MESSAGES_LOWER = [
-        "⭐ Brillas como una estrella",
-        "🏆 Sonrisa de campeón",
-        "😁🦷 Dientes limpios, sonrisa feliz",
-        "✨ Estás que reluces"
+        "<span class='emoji-small'>⭐</span> Brillas como una estrella",
+        "<span class='emoji-small'>🏆</span> Sonrisa de campeón",
+        "<span class='emoji-small'>😁🦷</span> Dientes limpios, sonrisa feliz",
+        "<span class='emoji-small'>✨</span> Estás que reluces"
     ];
     const MESSAGES_UPPER = [
-        "🚀 Nivel brillo máximo",
-        "🎯 Tu sonrisa gana puntos",
-        "💡 Hoy iluminas la clase",
-        "🔆 Has encendido tu sonrisa",
-        "🎯 Misión dientes limpios: superada"
+        "<span class='emoji-small'>🚀</span> Nivel brillo máximo",
+        "<span class='emoji-small'>🎯</span> Tu sonrisa gana puntos",
+        "<span class='emoji-small'>💡</span> Hoy iluminas la clase",
+        "<span class='emoji-small'>🔆</span> Has encendido tu sonrisa",
+        "<span class='emoji-small'>🎯</span> Misión dientes limpios: superada"
     ];
 
     // Default pool
@@ -450,8 +450,9 @@ function showSuccessScreen(streak) {
     DOM.text.streakMessage.innerHTML = randomMsg.replace(/\n/g, '<br>');
     DOM.text.streakLabel.textContent = '';
 
-    // Auto-resize long messages logic
-    if (randomMsg.length > 25) {
+    // Auto-resize long messages logic (strip HTML tags for length check)
+    const textContent = DOM.text.streakMessage.textContent || DOM.text.streakMessage.innerText;
+    if (textContent.length > 25) {
         DOM.text.streakMessage.style.fontSize = "clamp(1.5rem, 6vw, 3rem)";
     } else {
         DOM.text.streakMessage.style.removeProperty('font-size');
