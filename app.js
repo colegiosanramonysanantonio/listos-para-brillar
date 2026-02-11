@@ -200,12 +200,14 @@ function populateCursos() {
     DOM.inputs.curso.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_course}</option>`;
     if (!studentData) return;
 
+    const fragment = document.createDocumentFragment();
     Object.keys(studentData).forEach(curso => {
         const opt = document.createElement('option');
         opt.value = curso;
         opt.text = curso;
-        DOM.inputs.curso.add(opt);
+        fragment.appendChild(opt);
     });
+    DOM.inputs.curso.appendChild(fragment);
 }
 
 async function fetchStreak(curso, grupo, alumno) {
@@ -236,6 +238,7 @@ async function loadRace() {
         }
 
         const maxPoints = Math.max(...ranking.map(r => r.points));
+        const fragment = document.createDocumentFragment();
 
         ranking.forEach((r, index) => {
             const row = document.createElement('div');
@@ -258,8 +261,9 @@ async function loadRace() {
                     ${r.points}
                 </div>
             `;
-            DOM.raceContainer.appendChild(row);
+            fragment.appendChild(row);
         });
+        DOM.raceContainer.appendChild(fragment);
 
     } catch (e) {
         console.error(e);
@@ -506,10 +510,13 @@ function showSuccessScreen(streak) {
     };
     updateCountdown();
 
-    const interval = setInterval(() => {
+    // Clear any existing interval before starting a new one
+    if (window.countdownInterval) clearInterval(window.countdownInterval);
+
+    window.countdownInterval = setInterval(() => {
         seconds--;
         if (seconds < 0) {
-            clearInterval(interval);
+            clearInterval(window.countdownInterval);
             resetApp();
         } else {
             updateCountdown();
@@ -533,6 +540,7 @@ function showScreen(screenName) {
 }
 
 function resetApp() {
+    if (window.countdownInterval) clearInterval(window.countdownInterval);
     selectedStudent = { curso: '', grupo: '', nombre: '' };
     DOM.inputs.curso.value = "";
     DOM.inputs.grupo.innerHTML = `<option value="">${TRANSLATIONS[currentLang].select_group}</option>`;
@@ -649,5 +657,15 @@ function playSound(type) {
         }
     } catch (e) { }
 }
-const confettiEffect = () => { /* ... */ };
+const confettiEffect = () => {
+    // Wrapper for the global confetti function from canvas-confetti lib
+    if (typeof confetti === 'function') {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#FFD700', '#FF0000', '#00FF00', '#0000FF']
+        });
+    }
+};
 document.addEventListener('DOMContentLoaded', initApp);

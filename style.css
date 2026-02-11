@@ -272,6 +272,7 @@ header h1:hover {
     animation: floatUp 6s ease-in-out infinite;
     opacity: 0;
     pointer-events: none;
+    will-change: transform, opacity;
 }
 
 .bubble:nth-child(1) {
@@ -910,6 +911,21 @@ select:disabled {
     color: white;
 }
 
+/* Race Bar Wrapper Optimization */
+.race-bar-wrapper {
+    contain: content;
+    margin-bottom: 15px;
+    /* Ensure spacing from JS logic found in earlier review */
+}
+
+/* Base de la Barra de Progreso */
+.race-bar-bg {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
 /* Race Screen Styles */
 .race-list {
     display: flex;
@@ -1260,6 +1276,8 @@ select:disabled {
     z-index: 100;
     border-radius: 40px;
     /* Very rounded */
+    will-change: transform, opacity;
+    transform: translateZ(0);
 }
 
 /* Animación: Nadar hacia el frente */
