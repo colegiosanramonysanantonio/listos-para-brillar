@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Cepillos App - Control de Higiene Dental</title>
-    <link rel="stylesheet" href="style.css?v=2.4">
+    <link rel="stylesheet" href="style.css?v=2.5">
     <link
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Fredoka+One&family=Outfit:wght@400;700&display=swap"
         rel="stylesheet">
@@ -104,11 +104,7 @@
                     </button>
                 </div>
 
-                <button
-                    onclick="if(confirm('¿Borrar caché y recargar?')) { caches.keys().then(n=>n.forEach(c=>caches.delete(c))); navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister())); setTimeout(()=>window.location.reload(true), 500); }"
-                    style="z-index:9999; position:fixed; bottom:10px; left:10px; background:rgba(255,0,0,0.8); color:white; padding:8px 12px; border-radius:10px; border:none; font-weight:bold; font-size: 0.8rem;">
-                    🛠️ FORZAR ACTUALIZACIÓN
-                </button>
+
 
                 <!-- PANEL DE PRUEBAS SECRETO -->
                 <div id="test-panel" class="test-panel hidden">
@@ -203,9 +199,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="guardian.js?v=2.4"></script>
+    <script src="guardian.js?v=2.5"></script>
     </script>
-    <script src="app.js?v=2.4"></script>
+    <script src="app.js?v=2.5"></script>
     </script>
 </body>
 
