@@ -724,6 +724,10 @@ select:disabled {
         font-size: 2rem;
         padding: 0 10px;
     }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
