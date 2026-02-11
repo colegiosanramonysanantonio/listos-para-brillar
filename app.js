@@ -40,7 +40,20 @@ const TRANSLATIONS = {
         race_loading: 'Calculando posiciones... 🏎️💨',
         btn_back_home: 'Volver al Inicio',
         btn_yes: '¡Sí, brillan! ✨',
-        btn_no: 'Volver atrás'
+        btn_no: 'Volver atrás',
+        messages_lower: [
+            "<span class='emoji-small'>⭐</span> Brillas como una estrella",
+            "<span class='emoji-small'>🏆</span> Sonrisa de campeón",
+            "<span class='emoji-small'>😁🦷</span> Dientes limpios, sonrisa feliz",
+            "<span class='emoji-small'>✨</span> Estás que reluces"
+        ],
+        messages_upper: [
+            "<span class='emoji-small'>🚀</span> Nivel brillo máximo",
+            "<span class='emoji-small'>🎯</span> Tu sonrisa gana puntos",
+            "<span class='emoji-small'>💡</span> Hoy iluminas la clase",
+            "<span class='emoji-small'>🔆</span> Has encendido tu sonrisa",
+            "<span class='emoji-small'>🎯</span> Misión dientes limpios: superada"
+        ]
     },
     en: {
         loading: 'Loading...',
@@ -66,9 +79,21 @@ const TRANSLATIONS = {
         btn_no: 'Go Back',
         btn_admin_back: '⬅️ Exit Panel',
         countdown_prefix: 'Returning in ',
-        race_title: '🏆 The Great Race',
         race_subtitle: 'Which grade is leading?',
-        race_loading: 'Calculating positions... 🏎️💨'
+        race_loading: 'Calculating positions... 🏎️💨',
+        messages_lower: [
+            "<span class='emoji-small'>⭐</span> You shine like a star",
+            "<span class='emoji-small'>🏆</span> Champion smile",
+            "<span class='emoji-small'>😁🦷</span> Clean teeth, happy smile",
+            "<span class='emoji-small'>✨</span> You are glowing"
+        ],
+        messages_upper: [
+            "<span class='emoji-small'>🚀</span> Maximum shine level",
+            "<span class='emoji-small'>🎯</span> Your smile scores points",
+            "<span class='emoji-small'>💡</span> You light up the class today",
+            "<span class='emoji-small'>🔆</span> You ignited your smile",
+            "<span class='emoji-small'>🎯</span> Mission clean teeth: accomplished"
+        ]
     }
 };
 
@@ -425,19 +450,10 @@ function showSuccessScreen(streak) {
     DOM.text.streakDays.innerHTML = `<div style="line-height:0.8">${streak}</div><div style="font-size:0.35em; line-height:1; margin-top:-10px">${label}</div>`;
 
     // Messages Adapted by Course Level (User Specific List)
-    const MESSAGES_LOWER = [
-        "<span class='emoji-small'>⭐</span> Brillas como una estrella",
-        "<span class='emoji-small'>🏆</span> Sonrisa de campeón",
-        "<span class='emoji-small'>😁🦷</span> Dientes limpios, sonrisa feliz",
-        "<span class='emoji-small'>✨</span> Estás que reluces"
-    ];
-    const MESSAGES_UPPER = [
-        "<span class='emoji-small'>🚀</span> Nivel brillo máximo",
-        "<span class='emoji-small'>🎯</span> Tu sonrisa gana puntos",
-        "<span class='emoji-small'>💡</span> Hoy iluminas la clase",
-        "<span class='emoji-small'>🔆</span> Has encendido tu sonrisa",
-        "<span class='emoji-small'>🎯</span> Misión dientes limpios: superada"
-    ];
+    // Now using TRANSLATIONS object based on currentLang
+    const t = TRANSLATIONS[currentLang];
+    const MESSAGES_LOWER = t.messages_lower;
+    const MESSAGES_UPPER = t.messages_upper;
 
     // Default pool
     let pool = [...MESSAGES_LOWER, ...MESSAGES_UPPER];
