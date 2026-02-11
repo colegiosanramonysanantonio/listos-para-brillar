@@ -495,12 +495,14 @@ function showScreen(screenName) {
     Object.values(DOM.screens).forEach(el => el.classList.add('hidden'));
     DOM.screens[screenName].classList.remove('hidden');
 
-    if (screenName === 'action' || screenName === 'success') {
+    if (screenName === 'action' || screenName === 'success' || screenName === 'race' || screenName === 'admin') {
         DOM.headers.left.style.display = 'none';
         DOM.headers.right.style.display = 'none';
+        document.getElementById('app').classList.add('wide-mode');
     } else {
         DOM.headers.left.style.display = 'block';
         DOM.headers.right.style.display = 'block';
+        document.getElementById('app').classList.remove('wide-mode');
     }
 }
 
