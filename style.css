@@ -1335,6 +1335,8 @@ select:disabled {
     box-shadow: none;
     margin-top: 5px;
     /* Added spacing */
+    margin-bottom: 60px;
+    /* Lift text up */
     max-width: 100%;
     text-transform: uppercase;
     /* No text shadow or white border requested, just thick black */
