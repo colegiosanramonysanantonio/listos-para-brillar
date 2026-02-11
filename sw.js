@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cepillos-v30';
+﻿const CACHE_NAME = 'cepillos-v31';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -6,7 +6,13 @@ const ASSETS_TO_CACHE = [
     './app.js',
     './guardian.js',
     './manifest.json',
-    './img/pwa_icon.png'
+    './img/pwa_icon.png',
+    './img/Fondo-marino 3.webp',
+    './img/image_34.webp',
+    './img/Muela de fuego-nivel 1.webp',
+    './img/Muela de fuego-nivel 2.webp',
+    './img/Muela de fuego-nivel 3.webp',
+    './img/cropped-colegio-san-ramon-y-san-antonio-logo (2).png'
 ];
 
 self.addEventListener('install', (event) => {

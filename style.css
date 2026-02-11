@@ -17,7 +17,7 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: url('img/Fondo-marino 3.jpeg') no-repeat center bottom fixed;
+    background: url('img/Fondo-marino 3.webp') no-repeat center bottom fixed;
     background-size: cover;
     background-attachment: fixed;
     color: var(--text-main);
