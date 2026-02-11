@@ -368,6 +368,7 @@ function handleRegister(estado) {
     DOM.buttons.no.disabled = true;
 
     if (estado === 'Sí') {
+        DOM.buttons.yes.classList.add('btn-success-active'); // Turn green immediately
         playSound('bling');
         confettiEffect();
 
@@ -521,6 +522,7 @@ function resetApp() {
 
     DOM.buttons.next.classList.add('hidden');
     DOM.buttons.yes.disabled = false;
+    DOM.buttons.yes.classList.remove('btn-success-active'); // Reset button color
     DOM.buttons.no.disabled = false;
     showScreen('selection');
 }

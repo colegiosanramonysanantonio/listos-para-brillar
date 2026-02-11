@@ -562,6 +562,14 @@ select:disabled {
     color: white;
 }
 
+.btn-success-active {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+    border-color: #219150 !important;
+    color: white !important;
+    transform: scale(0.98);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
 .btn-glass-gold {
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(12px);
@@ -1263,12 +1271,13 @@ select:disabled {
     width: 90%;
     /* Force width usage */
     height: auto;
-    max-height: 85vh;
-    /* Huge height limit */
+    height: 60vh;
+    /* Force height priority */
+    min-height: 50vh;
+    width: auto;
+    /* Maintain aspect ratio */
     max-width: 100%;
-    /* Fill container width */
-    width: 100%;
-    /* Force 100% width */
+    /* Prevent horizontal overflow */
     flex: 1;
     /* Grow to fill space */
     animation: nadarHaciaElFrente 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
