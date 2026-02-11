@@ -146,7 +146,6 @@ const DOM = {
         admin: document.getElementById('btn-admin-access'),
         yes: document.getElementById('btn-yes'),
         no: document.getElementById('btn-no'),
-        back: document.getElementById('btn-back'),
         raceBack: document.getElementById('btn-race-back'),
         adminClose: document.getElementById('btn-admin-back'),
         adminReset: document.getElementById('btn-admin-reset')
@@ -361,10 +360,7 @@ function setupEventListeners() {
                 `;
     });
 
-    DOM.buttons.back.addEventListener('click', () => {
-        playSound('pop');
-        showScreen('selection');
-    });
+
 
     DOM.buttons.race.addEventListener('click', () => {
         playSound('bubble');
