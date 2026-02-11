@@ -826,6 +826,7 @@ select:disabled {
 }
 
 .streak-message {
+    font-family: 'Baloo 2', cursive;
     font-size: clamp(2.5rem, 10vw, 5rem);
     font-weight: 900;
     color: #000000;
