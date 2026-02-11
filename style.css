@@ -724,9 +724,25 @@ select:disabled {
         font-size: 2rem;
         padding: 0 10px;
     }
+}
 
+/* Force stacked buttons for a wider range of tablets/mobile */
+@media (max-width: 1024px) {
     .grid-2 {
         grid-template-columns: 1fr;
+    }
+
+    .btn-action {
+        height: auto;
+        min-height: 110px;
+        padding: 20px;
+    }
+
+    .streak-message {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        /* Reduced size to prevent overflow */
+        word-break: break-word;
+        /* Prevent cutting off */
     }
 }
 
