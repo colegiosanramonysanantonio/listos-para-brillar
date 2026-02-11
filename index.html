@@ -18,7 +18,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
+            navigator.serviceWorker.register('./sw.js?v=18')
                 .then(reg => {
                     console.log('Service Worker registrado:', reg.scope);
                     // Force update logic could go here
@@ -96,6 +96,12 @@
                         Ver Carrera 🏆
                     </button>
                 </div>
+
+                <button
+                    onclick="if(confirm('¿Borrar caché y recargar?')) { caches.keys().then(n=>n.forEach(c=>caches.delete(c))); navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister())); setTimeout(()=>window.location.reload(true), 500); }"
+                    style="z-index:9999; position:fixed; bottom:10px; left:10px; background:rgba(255,0,0,0.8); color:white; padding:8px 12px; border-radius:10px; border:none; font-weight:bold; font-size: 0.8rem;">
+                    🛠️ FORZAR ACTUALIZACIÓN
+                </button>
 
                 <!-- PANEL DE PRUEBAS SECRETO -->
                 <div id="test-panel" class="test-panel hidden">
