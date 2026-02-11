@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Cepillos App - Control de Higiene Dental</title>
-    <link rel="stylesheet" href="style.css?v=1.8">
+    <link rel="stylesheet" href="style.css?v=1.9">
     <link
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Fredoka+One&family=Outfit:wght@400;700&display=swap"
         rel="stylesheet">
@@ -26,8 +26,8 @@
             });
 
             // Then register new one
-            navigator.serviceWorker.register('./sw.js?v=19')
-                .then(reg => console.log('SW v1.9 registered'))
+            navigator.serviceWorker.register('./sw.js?v=21')
+                .then(reg => console.log('SW v2.1 registered'))
                 .catch(err => console.log('SW error:', err));
         });
     }
@@ -60,7 +60,7 @@
             </div>
             <div id="version-tag"
                 style="position:fixed; bottom:5px; right:5px; font-size:0.7rem; opacity:0.5; color:#999; z-index:9999;">
-                v1.9</div>
+                v2.0</div>
 
             <!-- Pantalla de Bienvenida/Selección -->
             <section id="selection-screen" class="screen">
@@ -204,9 +204,9 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="guardian.js?v=1.8"></script>
+    <script src="guardian.js?v=1.9"></script>
     </script>
-    <script src="app.js?v=1.8"></script>
+    <script src="app.js?v=1.9"></script>
     </script>
 </body>
 
