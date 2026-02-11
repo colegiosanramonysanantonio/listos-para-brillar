@@ -1268,9 +1268,9 @@ select:disabled {
 }
 
 .streak-muela {
-    height: 70vh;
+    height: 70vh !important;
     /* Increase height further */
-    width: auto;
+    width: auto !important;
     max-width: 100%;
     /* Remove conflicting width rules */
     flex: 1;
