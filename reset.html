@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reparando App...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+
+        .status {
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🛠️ MANTENIMIENTO</h1>
+    <div id="status" class="status">Iniciando reparación...</div>
+    <div class="spinner"></div>
+
+    <script>
+        const status = document.getElementById('status');
+
+        async function wipeAndReload() {
+            try {
+                // 1. Unregister all Service Workers
+                status.textContent = "Desactivando sistema antiguo...";
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        console.log('SW Unregistered');
+                    }
+                }
+
+                // 2. Delete all Caches
+                status.textContent = "Borrando memoria...";
+                if ('caches' in window) {
+                    const cacheKeys = await caches.keys();
+                    for (let key of cacheKeys) {
+                        await caches.delete(key);
+                        console.log('Cache Deleted:', key);
+                    }
+                }
+
+                // 3. Optional: Clear storage (careful if you want to keep data, but here we prioritize UI fix)
+                // localStorage.clear(); // Uncomment if needed, but might lose local data
+
+                status.textContent = "¡Listo! Actualizando...";
+
+                // 4. Force reload to index with a timestamp to bust network cache
+                setTimeout(() => {
+                    window.location.replace('index.html?t=' + Date.now());
+                }, 1500);
+
+            } catch (error) {
+                status.textContent = "Error: " + error.message;
+                status.style.color = "red";
+            }
+        }
+
+        // Run immediately
+        wipeAndReload();
+    </script>
+</body>
+
+</html>
