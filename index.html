@@ -73,9 +73,9 @@
 
                     <div class="form-group hidden-cascade" id="fg-alumno">
                         <label id="label-alumno">👤 ¿Quién eres?</label>
-                        <select id="select-alumno" disabled>
-                            <option value="">Busca tu nombre...</option>
-                        </select>
+                        <div id="name-grid" class="name-grid">
+                            <!-- Name buttons generated dynamically -->
+                        </div>
                     </div>
 
                     <button id="btn-next" class="btn btn-main btn-pulse hidden" disabled>
@@ -163,7 +163,7 @@
                 navigator.serviceWorker.getRegistrations().then(regs => {
                     for (let r of regs) r.unregister();
                 });
-                navigator.serviceWorker.register('./sw.js?v=40')
+                navigator.serviceWorker.register('./sw.js?v=41')
                     .then(() => console.log('SW v4.0 registered'))
                     .catch(err => console.log('SW error:', err));
             });

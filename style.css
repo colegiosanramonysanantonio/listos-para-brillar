@@ -363,6 +363,76 @@ header p {
     gap: 4px;
 }
 
+/* ── Name Grid (replaces student select) ── */
+.name-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-height: 35vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 4px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.name-btn {
+    padding: 12px 8px;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    background: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    word-break: break-word;
+    line-height: 1.2;
+}
+
+.name-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 172, 254, 0.2);
+    border-color: #4facfe;
+}
+
+.name-btn:active {
+    transform: translateY(1px) scale(0.97);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.name-btn.selected {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border-color: #0088cc;
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+    transform: scale(1.03);
+}
+
+/* 2 columns on small phones */
+@media (max-width: 400px) {
+    .name-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 3 columns on tablets and larger */
+@media (min-width: 768px) {
+    .name-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        max-height: 40vh;
+    }
+
+    .name-btn {
+        padding: 14px 10px;
+        font-size: 1.05rem;
+    }
+}
+
 .form-group label {
     font-weight: 800;
     font-size: 1.2rem;

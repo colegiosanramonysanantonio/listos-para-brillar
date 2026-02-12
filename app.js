@@ -130,7 +130,7 @@ function cacheDom() {
         inputs: {
             curso: document.getElementById('select-curso'),
             grupo: document.getElementById('select-grupo'),
-            alumno: document.getElementById('select-alumno'),
+            nameGrid: document.getElementById('name-grid'),
             fgGrupo: document.getElementById('fg-grupo'),
             fgAlumno: document.getElementById('fg-alumno')
         },
@@ -285,7 +285,7 @@ async function loadRace() {
 function setupEventListeners() {
     DOM.inputs.curso.addEventListener('change', handleCursoChange);
     DOM.inputs.grupo.addEventListener('change', handleGrupoChange);
-    DOM.inputs.alumno.addEventListener('change', handleAlumnoChange);
+    // Name grid uses event delegation (click handler added in populateNameGrid)
     DOM.buttons.next.addEventListener('click', handleNextClick);
     DOM.buttons.race.addEventListener('click', () => { playSound('bubble'); showScreen('race'); loadRace(); });
     DOM.buttons.raceBack.addEventListener('click', () => showScreen('selection'));
@@ -307,9 +307,8 @@ function handleCursoChange(e) {
     streakRequestId++;
 
     DOM.inputs.grupo.innerHTML = `<option value="">${t.select_group}</option>`;
-    DOM.inputs.alumno.innerHTML = `<option value="">${t.select_student}</option>`;
+    DOM.inputs.nameGrid.innerHTML = '';
     DOM.inputs.grupo.disabled = true;
-    DOM.inputs.alumno.disabled = true;
     DOM.buttons.next.classList.add('hidden');
     DOM.buttons.next.disabled = true;
 
@@ -348,30 +347,51 @@ function handleGrupoChange(e) {
     currentStreakData = { value: 0, includesToday: false };
     streakRequestId++;
 
-    DOM.inputs.alumno.innerHTML = `<option value="">${t.select_student}</option>`;
-    DOM.inputs.alumno.disabled = true;
+    DOM.inputs.nameGrid.innerHTML = '';
     DOM.buttons.next.classList.add('hidden');
     DOM.buttons.next.disabled = true;
     toggleCascade(DOM.inputs.fgAlumno, false);
 
     if (curso && grupo && studentData[curso][grupo]) {
-        DOM.inputs.alumno.disabled = false;
         toggleCascade(DOM.inputs.fgAlumno, true);
-
-        studentData[curso][grupo].sort().forEach(alumno => {
-            const opt = document.createElement('option');
-            opt.value = alumno;
-            opt.text = alumno;
-            DOM.inputs.alumno.add(opt);
-        });
+        populateNameGrid(studentData[curso][grupo].slice().sort());
     }
 }
 
-async function handleAlumnoChange(e) {
+function populateNameGrid(names) {
+    const grid = DOM.inputs.nameGrid;
+    grid.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+
+    names.forEach(name => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'name-btn';
+        btn.textContent = name;
+        btn.dataset.name = name;
+        fragment.appendChild(btn);
+    });
+    grid.appendChild(fragment);
+
+    // Event delegation: single listener on the grid container
+    grid.onclick = (e) => {
+        const btn = e.target.closest('.name-btn');
+        if (!btn) return;
+        handleNameSelection(btn);
+    };
+}
+
+async function handleNameSelection(btn) {
     playSound('pop');
+
+    // Deselect previous
+    const prev = DOM.inputs.nameGrid.querySelector('.name-btn.selected');
+    if (prev) prev.classList.remove('selected');
+    btn.classList.add('selected');
+
     selectedStudent.curso = DOM.inputs.curso.value;
     selectedStudent.grupo = DOM.inputs.grupo.value;
-    selectedStudent.nombre = e.target.value;
+    selectedStudent.nombre = btn.dataset.name;
 
     // Reset streak immediately so stale data never shows
     currentStreakData = { value: 0, includesToday: false };
@@ -555,9 +575,8 @@ function resetApp() {
 
     DOM.inputs.curso.value = "";
     DOM.inputs.grupo.innerHTML = `<option value="">${t.select_group}</option>`;
-    DOM.inputs.alumno.innerHTML = `<option value="">${t.select_student}</option>`;
+    DOM.inputs.nameGrid.innerHTML = '';
     DOM.inputs.grupo.disabled = true;
-    DOM.inputs.alumno.disabled = true;
 
     toggleCascade(DOM.inputs.fgGrupo, false);
     toggleCascade(DOM.inputs.fgAlumno, false);
@@ -616,7 +635,6 @@ function updateLanguage() {
 
     if (DOM.inputs.curso.options[0]) DOM.inputs.curso.options[0].text = t.select_course;
     if (DOM.inputs.grupo.options[0]) DOM.inputs.grupo.options[0].text = t.select_group;
-    if (DOM.inputs.alumno.options[0]) DOM.inputs.alumno.options[0].text = t.select_student;
 
     const btnYesText = document.querySelector('#btn-yes .text');
     const btnNoText = document.querySelector('#btn-no .text');
