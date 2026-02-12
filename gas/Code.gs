@@ -155,7 +155,7 @@ function getStreak(ss, curso, grupo, alumno) {
     const sheets = ss.getSheets();
     for (let s of sheets) {
       const sName = s.getName().trim().toUpperCase();
-      if (sName.includes(searchName)) {
+      if (sName === searchName.toUpperCase()) {
         sheet = s;
         break;
       }
@@ -177,8 +177,11 @@ function getStreak(ss, curso, grupo, alumno) {
   
   if (alumnoRow === -1) return ContentService.createTextOutput(JSON.stringify({ streak: 0 })).setMimeType(ContentService.MimeType.JSON);
   
+  // BUGFIX: Only scan up to today's day, not day 31.
+  // In short months (Feb=28), scanning days 29-31 causes JS Date overflow
+  // (e.g., new Date(2026, 1, 31) = March 3), corrupting weekend/holiday checks.
   let ultimoDiaMarcado = -1;
-  for (let d = 31; d >= 1; d--) {
+  for (let d = diaHoy; d >= 1; d--) {
      if (d < data[alumnoRow].length) {
          const celda = data[alumnoRow][d]; 
          let esCheck = false;

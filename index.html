@@ -6,35 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#4a90e2">
     <title>Cepillos App - Control de Higiene Dental</title>
-    <link rel="stylesheet" href="style.css?v=3.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="img/image_34.png.png">
+    <link rel="icon" type="image/png" href="img/image_34.png.png">
     <link rel="preload" href="img/Fondo-marino 3.jpeg" as="image">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&display=swap" as="style">
+    <link rel="stylesheet" href="style.css?v=4.0">
     <link
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Fredoka+One&family=Outfit:wght@400;700&display=swap"
         rel="stylesheet">
-</head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4a90e2">
-<link rel="apple-touch-icon" href="img/image_34.png.png">
-<link rel="icon" type="image/png" href="img/image_34.png.png">
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // AGGRESSIVE CACHE BUSTING: Unregister all old workers first
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                for (let registration of registrations) {
-                    registration.unregister();
-                }
-            });
-
-            // Then register new one
-            navigator.serviceWorker.register('./sw.js?v=31')
-                .then(reg => console.log('SW v3.1 registered'))
-                .catch(err => console.log('SW error:', err));
-        });
-    }
-</script>
 </head>
 
 <body>
@@ -61,7 +43,6 @@
             <div class="app-header-right">
                 <button id="btn-admin-access" class="btn-icon">⚙️</button>
             </div>
-
 
             <!-- Pantalla de Bienvenida/Selección -->
             <section id="selection-screen" class="screen">
@@ -105,19 +86,6 @@
                         Ver Carrera 🏆
                     </button>
                 </div>
-
-
-
-                <!-- PANEL DE PRUEBAS SECRETO -->
-                <div id="test-panel" class="test-panel hidden">
-                    <p>🧪 MODO PRUEBA (SOLO PARA TI):</p>
-                    <div class="test-buttons">
-                        <button onclick="debugSetStreak(1)">Nivel 1</button>
-                        <button onclick="debugSetStreak(5)">Nivel 2</button>
-                        <button onclick="debugSetStreak(12)">Nivel 3</button>
-                        <button onclick="localStorage.clear(); location.reload();">Reiniciar Todo</button>
-                    </div>
-                </div>
             </section>
 
             <!-- Pantalla de Acción -->
@@ -140,20 +108,13 @@
             <!-- Pantalla de Éxito con Sistema de Racha -->
             <section id="success-screen" class="screen hidden">
                 <div class="streak-celebration">
-                    <!-- Muela de Fuego (cambia según nivel) -->
                     <img id="streak-muela" src="img/Muela de fuego-nivel 1.svg" alt="Muela de Fuego"
                         class="streak-muela">
-
-                    <!-- Contador de días -->
                     <div class="streak-counter">
                         <span id="streak-days">1</span>
                         <span id="streak-label" class="streak-label">días</span>
                     </div>
-
-                    <!-- Mensaje motivador -->
                     <p id="streak-message" class="streak-message">¡Buen comienzo!</p>
-
-                    <!-- Countdown -->
                     <p id="countdown-text" class="countdown-text">Volviendo al inicio en 5 segundos...</p>
                 </div>
             </section>
@@ -165,7 +126,6 @@
                     <p>¿Qué curso llegará primero a la meta?</p>
                 </header>
                 <div id="race-container" class="race-list">
-                    <!-- Las barras se cargarán dinámicamente -->
                     <div class="loading-race">Calculando posiciones... 🏎️💨</div>
                 </div>
                 <button id="btn-race-back" class="btn btn-glass-gold">Volver al Registro</button>
@@ -176,7 +136,6 @@
                 <header>
                     <h2>Panel Profe ⚙️</h2>
                 </header>
-
                 <div id="admin-main-menu" class="admin-menu">
                     <button id="btn-admin-reset" class="btn btn-admin-option btn-danger-soft">
                         <span class="icon">🔄</span>
@@ -187,7 +146,6 @@
                         ⬅️ Salir del Panel
                     </button>
                 </div>
-
                 <div id="admin-content" class="admin-content hidden">
                     <!-- Contenido dinámico para confirmación de reset -->
                 </div>
@@ -196,10 +154,20 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="guardian.js?v=3.0"></script>
-    </script>
-    <script src="app.js?v=3.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+    <script src="guardian.js?v=4.0"></script>
+    <script src="app.js?v=4.0"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.getRegistrations().then(regs => {
+                    for (let r of regs) r.unregister();
+                });
+                navigator.serviceWorker.register('./sw.js?v=40')
+                    .then(() => console.log('SW v4.0 registered'))
+                    .catch(err => console.log('SW error:', err));
+            });
+        }
     </script>
 </body>
 

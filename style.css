@@ -17,32 +17,26 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: url('img/Fondo-marino 3.jpeg') no-repeat center bottom fixed;
+    background: url('img/Fondo-marino 3.jpeg') no-repeat center bottom;
     background-size: cover;
-    background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
     height: 100vh;
-    /* Force fixed height */
     overflow: hidden;
     touch-action: manipulation;
-    /* Prevent body scroll, handle inside containers */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Center vertically and horizontally */
     padding: 20px;
-    /* Reduced padding for small screens */
 }
 
-/* Logo del Colegio - Centrado y compacto */
+/* ── Logo & Mascot ── */
 .school-logo {
     width: 110px;
     height: auto;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
-/* Mascota centrada y compacta */
 .mascot-inline {
     width: 240px;
     height: auto;
@@ -51,7 +45,7 @@ body {
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
 }
 
-/* Header Buttons */
+/* ── Header Buttons ── */
 .app-header-left,
 .app-header-right {
     position: absolute;
@@ -81,32 +75,27 @@ body {
     justify-content: center;
     align-items: center;
     font-weight: 700;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 #btn-lang-toggle:hover,
 #btn-admin-access:hover {
     background: #e3f2fd;
     transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 #btn-lang-toggle:active,
 #btn-admin-access:active {
     transform: scale(0.95);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Contenedor principal - SLIM & TRANSPARENTE */
+/* ── Main Container (Glassmorphism) ── */
 .container {
     background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     width: 90%;
-    /* Mobile default */
     max-width: 500px;
-    /* Narrow by default (Selection Screen) */
     border-radius: 25px;
     padding: 20px 25px 15px;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -114,24 +103,22 @@ body {
     position: relative;
     min-height: auto;
     display: flex;
-    display: flex;
     flex-direction: column;
     transition: max-width 0.5s ease, padding 0.5s ease;
 }
 
 .container.wide-mode {
     max-width: 1000px;
-    /* Wide for Action/Success/Race */
     width: 95%;
 }
 
 @media (min-width: 768px) {
     .container {
         width: 95% !important;
-        /* Removed default fixed width for tablet to allow dynamic sizing */
     }
 }
 
+/* ── Screens ── */
 .screen {
     flex: 1;
     display: flex;
@@ -139,11 +126,11 @@ body {
     justify-content: center;
     gap: 40px;
     animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    contain: layout style;
 }
 
 #selection-screen {
     gap: 15px;
-    /* Más compacto para acercar texto a botones */
 }
 
 .hidden {
@@ -162,26 +149,22 @@ body {
     }
 }
 
-/* Encabezados */
+/* ── Headers ── */
 header {
     text-align: center;
 }
-
-/* CSS consolidated in header-icons/school-logo sections */
 
 header h1 {
     font-family: 'Baloo 2', cursive;
     font-weight: 800;
     font-size: clamp(1.5rem, 5vw, 3rem);
     color: #007bff;
-    /* Borde blanco exterior con sombras múltiples */
     text-shadow:
         2px 2px 0 #ffffff,
         -2px -2px 0 #ffffff,
         2px -2px 0 #ffffff,
         -2px 2px 0 #ffffff,
         4px 4px 8px rgba(0, 0, 0, 0.2);
-    /* Limpieza de estilos rotos */
     -webkit-text-stroke: 0;
     background-image: none;
     -webkit-background-clip: border-box;
@@ -194,12 +177,10 @@ header h1 {
     cursor: pointer;
     transition: transform 0.2s ease;
     white-space: normal;
-    /* Allow wrapping */
     line-height: 1.1;
     padding: 0 10px;
 }
 
-/* Estrellas doradas con borde negro */
 .stars-icon {
     color: #FFD700;
     font-size: 2rem;
@@ -211,8 +192,6 @@ header h1 {
     margin-top: 0;
 }
 
-
-/* Brillo que pasa por las letras */
 @keyframes titleShine {
 
     0%,
@@ -225,7 +204,6 @@ header h1 {
     }
 }
 
-/* Rebote al tocar */
 header h1:active {
     transform: scale(0.92);
 }
@@ -256,7 +234,7 @@ header h1:hover {
     }
 }
 
-/* Burbujas flotantes */
+/* ── Bubbles Animation ── */
 .title-wrapper {
     position: relative;
     display: inline-block;
@@ -315,9 +293,6 @@ header h1:hover {
     }
 }
 
-
-
-
 header p {
     color: var(--text-main);
     font-size: 1.2rem;
@@ -325,7 +300,7 @@ header p {
     margin-bottom: 12px;
 }
 
-/* Wrapper para tarjeta */
+/* ── App Wrapper ── */
 .app-wrapper {
     display: flex;
     flex-direction: column;
@@ -334,7 +309,6 @@ header p {
     max-width: 650px;
 }
 
-/* Header simplificado - solo mascota centrada */
 .header-icons {
     display: flex;
     flex-direction: column;
@@ -345,7 +319,7 @@ header p {
     padding-top: 5px;
 }
 
-/* Animación burbuja para cascada */
+/* ── Cascade Animation ── */
 @keyframes bubblePop {
     0% {
         transform: scale(0.85);
@@ -371,24 +345,16 @@ header p {
     animation: bubblePop 0.3s ease forwards;
 }
 
-/* CSS consolidated above */
-
-/* Global hidden helper */
-.hidden {
-    display: none !important;
-}
-
-/* Mantener por compatibilidad */
+/* Keep for compatibility */
 .mascot-img {
     display: none;
 }
 
-/* Formularios */
+/* ── Forms ── */
 .selection-grid {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Tighter */
 }
 
 .form-group {
@@ -406,18 +372,16 @@ header p {
 
 select {
     padding: 8px 15px;
-    /* Ultra-thin padding */
     border-radius: 15px;
     border: 2px solid transparent;
     background: white;
     font-size: 1.1rem;
-    /* Slightly smaller font */
     font-family: inherit;
     color: var(--text-main);
     outline: none;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, transform 0.3s ease;
 }
 
 select:focus {
@@ -433,10 +397,10 @@ select:disabled {
     cursor: not-allowed;
 }
 
-/* Botones 3D Bubbly */
+/* ── Buttons ── */
 .btn {
     padding: 20px 40px;
-    border-radius: 25px;
+    border-radius: 30px;
     border: none;
     font-size: 1.4rem;
     font-weight: 700;
@@ -448,8 +412,19 @@ select:disabled {
     gap: 15px;
     position: relative;
     overflow: hidden;
-    transition: all 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
     transform-style: preserve-3d;
+    box-shadow:
+        0 8px 0 rgba(0, 0, 0, 0.1),
+        0 15px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+}
+
+.btn:active {
+    transform: translateY(4px);
+    box-shadow:
+        0 4px 0 rgba(0, 0, 0, 0.1),
+        0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-main {
@@ -492,31 +467,14 @@ select:disabled {
 }
 
 .btn-link {
-    background: linear-gradient(180deg, #ffe066 0%, #ffcc00 50%, #e6b800 100%);
-    color: #333;
-    box-shadow:
-        0 6px 0 #cc9900,
-        0 10px 15px rgba(204, 153, 0, 0.3),
-        inset 0 2px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.btn-link:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        0 8px 0 #cc9900,
-        0 14px 20px rgba(204, 153, 0, 0.4),
-        inset 0 2px 0 rgba(255, 255, 255, 0.5),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
-}
-
-.btn-link:active {
-    transform: translateY(4px);
-    box-shadow:
-        0 2px 0 #cc9900,
-        0 4px 6px rgba(204, 153, 0, 0.2),
-        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    text-decoration: none;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: none;
 }
 
 .grid-2 {
@@ -563,6 +521,13 @@ select:disabled {
     color: white;
 }
 
+.btn-danger:active {
+    background: #cc0000;
+    border-color: #b30000;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
 .btn-success-active {
     background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
     border-color: #219150 !important;
@@ -577,16 +542,14 @@ select:disabled {
     -webkit-backdrop-filter: blur(12px);
     border: 2px solid rgba(255, 255, 255, 0.4);
     border-bottom: 10px solid #ffc107;
-    /* Base dorada curva (media luna) */
     color: #1a2a3a;
     box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
-    /* Resplandor dorado */
     border-radius: 50px;
     padding: 14px 45px;
     font-size: 1.25rem;
     font-weight: 800;
     margin-top: 15px;
-    transition: all 0.1s ease;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -599,17 +562,7 @@ select:disabled {
     box-shadow: 0 5px 10px rgba(255, 193, 7, 0.2);
 }
 
-.btn-link {
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    text-decoration: none;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-}
-
-/* Pantalla Éxito & Animaciones */
+/* ── Success Screen ── */
 .centered-content {
     text-align: center;
     display: flex;
@@ -680,7 +633,7 @@ select:disabled {
     margin-top: 15px;
 }
 
-/* Footer & Admin */
+/* ── Footer & Admin ── */
 .app-footer {
     position: absolute;
     bottom: 30px;
@@ -696,7 +649,7 @@ select:disabled {
     font-size: 1.8rem;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -707,15 +660,22 @@ select:disabled {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* ── Responsive: Mobile ── */
 @media (max-width: 768px) {
     .container {
         max-width: 80%;
         padding: 18px 22px 12px;
         border-radius: 28px;
     }
+
+    .btn {
+        min-height: 54px;
+        font-size: 1.15rem;
+        padding: 12px 25px;
+    }
 }
 
-/* Tablets en vertical: tarjeta más ancha y estética */
+/* ── Responsive: Tablet Portrait ── */
 @media (max-width: 768px) and (orientation: portrait) {
     .container {
         max-width: 90%;
@@ -730,7 +690,6 @@ select:disabled {
         width: 180px;
     }
 
-    /* Botones más grandes en tablet */
     .btn-action {
         height: 110px;
     }
@@ -745,7 +704,7 @@ select:disabled {
     }
 }
 
-/* Force stacked buttons for a wider range of tablets/mobile */
+/* Stacked buttons for tablets */
 @media (max-width: 1024px) {
     .grid-2 {
         grid-template-columns: 1fr;
@@ -759,9 +718,7 @@ select:disabled {
 
     .streak-message {
         font-size: clamp(1.8rem, 5vw, 3rem);
-        /* Reduced size to prevent overflow */
         word-break: normal;
-        /* Prevent cutting off */
     }
 }
 
@@ -787,6 +744,7 @@ select:disabled {
     }
 }
 
+/* ── Streak Counter ── */
 .streak-counter {
     display: flex;
     flex-direction: column;
@@ -795,9 +753,9 @@ select:disabled {
     position: relative;
     z-index: 20;
     width: 100%;
-    margin-top: -20px;
-    margin-bottom: 25px;
-    /* Added separation from message */
+    margin-top: 0;
+    margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .streak-counter #streak-days {
@@ -805,8 +763,7 @@ select:disabled {
     font-size: clamp(5rem, 18vw, 9rem);
     font-weight: 900;
     color: #FFD700;
-    line-height: 0.8;
-    /* Tighter line height for number */
+    line-height: 0.9;
     letter-spacing: -2px;
     text-transform: uppercase;
     text-shadow:
@@ -822,26 +779,22 @@ select:disabled {
     align-items: center;
 }
 
+/* FIX: Moved from inline styles to CSS classes */
+.streak-number {
+    line-height: 0.8;
+}
+
+.streak-unit {
+    font-size: 0.35em;
+    line-height: 1;
+    margin-top: -10px;
+}
+
 .streak-counter .streak-label {
     display: none;
 }
 
-.streak-message {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(2.5rem, 10vw, 5rem);
-    font-weight: 900;
-    color: #000000;
-    background: transparent;
-    padding: 0;
-    box-shadow: none;
-    margin-top: 0;
-    max-width: 100%;
-    text-transform: uppercase;
-    animation: count-pop 0.6s ease-out 1.2s both;
-    line-height: 1;
-}
-
-/* Achievements Bar */
+/* ── Achievements Bar ── */
 .achievements-bar {
     display: flex;
     justify-content: center;
@@ -855,7 +808,7 @@ select:disabled {
     font-size: 2rem;
     filter: grayscale(100%);
     opacity: 0.4;
-    transition: all 0.3s ease;
+    transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .medal.earned {
@@ -876,68 +829,25 @@ select:disabled {
     }
 }
 
-/* App Header Actions (Language Toggle & Settings) */
-.app-header-left {
-    position: absolute;
-    top: 25px;
-    left: 25px;
-}
-
-.app-header-right {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-}
-
-/* Language Toggle */
-#btn-lang-toggle {
-    background: white;
-    border: none;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 600;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#btn-lang-toggle:hover {
-    background: var(--primary-gradient);
-    color: white;
-}
-
-/* Race Bar Wrapper Optimization */
+/* ── Race Screen ── */
 .race-bar-wrapper {
     contain: content;
-    margin-bottom: 15px;
-    /* Ensure spacing from JS logic found in earlier review */
-}
-
-/* Base de la Barra de Progreso */
-.race-bar-bg {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 20px 0;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
-/* Race Screen Styles */
 .race-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin: 20px 0;
-}
-
-.race-bar-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    margin: 10px 0;
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    padding: 10px 20px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .race-label {
@@ -978,13 +888,6 @@ select:disabled {
     min-width: 60px;
 }
 
-.race-bar.leader {
-    background: linear-gradient(135deg, #f5af19 0%, #f12711 100%);
-    box-shadow: 0 5px 20px rgba(241, 39, 17, 0.4);
-}
-
-/* ========== RACE BAR SPECIFIC COLORS ========== */
-/* Using !important to FORCE override any other styles */
 .race-bar.gold {
     background: linear-gradient(90deg, #ffd700, #ffeb3b) !important;
     box-shadow: 0 0 15px gold !important;
@@ -1027,37 +930,18 @@ select:disabled {
     font-size: clamp(1.4rem, 4vw, 2rem);
 }
 
-/* Scrollable Race List */
-.race-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 10px 0;
-    flex: 1;
-    /* Take remaining space */
-    overflow-y: auto;
-    /* Enable internal scrolling */
-    width: 100%;
-    padding: 10px 20px;
-    /* Internal padding for scrollbar */
-    -webkit-overflow-scrolling: touch;
-    /* Smooth scroll on iOS */
-}
-
-/* Prevent footer button shrinking */
 #btn-race-back {
     flex-shrink: 0;
     margin-bottom: 10px;
     align-self: center;
 }
 
+/* ── Name Highlight ── */
 .highlight-name {
     display: inline-block;
     font-size: clamp(2rem, 5vw, 2.8rem);
     color: #ffffff !important;
-    /* White as requested */
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    /* Strong shadow for contrast */
     font-weight: 900;
     margin-bottom: 5px;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
@@ -1067,16 +951,11 @@ select:disabled {
     font-size: clamp(0.9rem, 4vw, 1.3rem);
     color: #555;
     font-weight: normal;
-    white-space: nowrap;
-    /* Force single line */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    width: 100%;
     white-space: normal;
-    /* Permitir 2 líneas */
     overflow: visible;
     text-overflow: clip;
+    display: block;
+    width: 100%;
 }
 
 .loading-race {
@@ -1086,7 +965,7 @@ select:disabled {
     padding: 30px;
 }
 
-/* Pulse Animation for Next Button */
+/* ── Pulse Animation ── */
 .btn-pulse:not(:disabled) {
     animation: pulse 2s infinite;
 }
@@ -1103,31 +982,7 @@ select:disabled {
     }
 }
 
-/* Bubbly Button Enhancement */
-.btn {
-    border-radius: 30px;
-    box-shadow:
-        0 8px 0 rgba(0, 0, 0, 0.1),
-        0 15px 30px rgba(0, 0, 0, 0.1);
-    transform: translateY(0);
-}
-
-.btn:active {
-    transform: translateY(4px);
-    box-shadow:
-        0 4px 0 rgba(0, 0, 0, 0.1),
-        0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-danger:active {
-    background: #cc0000;
-    /* Darker Link Red */
-    border-color: #b30000;
-    transform: translateY(4px);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-}
-
-/* Admin Panel Styles */
+/* ── Admin Panel ── */
 .admin-menu {
     display: flex;
     flex-direction: column;
@@ -1145,7 +1000,7 @@ select:disabled {
     align-items: center;
     justify-content: flex-start;
     gap: 15px;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
     border: none;
     font-size: 1.1rem;
@@ -1256,31 +1111,25 @@ select:disabled {
     }
 }
 
-/* ========== STREAK CELEBRATION SYSTEM (GIANT STYLE) ========== */
-/* ========== STREAK CELEBRATION SYSTEM (TOTAL REDESIGN) ========== */
+/* ── Streak Celebration System ── */
 .streak-celebration {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    /* Align bottom */
     text-align: center;
     padding: 0;
-    /* Remove padding to maximize space */
     gap: 0;
     height: 100%;
     min-height: 80vh;
-    /* Taller container */
     overflow: hidden;
     position: relative;
     z-index: 100;
     border-radius: 40px;
-    /* Very rounded */
-    will-change: transform, opacity;
+    will-change: transform;
     transform: translateZ(0);
 }
 
-/* Animación: Nadar hacia el frente */
 @keyframes nadarHaciaElFrente {
     0% {
         transform: scale(0.2) translateY(200px) rotateX(20deg);
@@ -1297,12 +1146,9 @@ select:disabled {
 
 .streak-muela {
     height: 80vh !important;
-    /* Maximized height */
     width: auto !important;
     max-width: 100%;
-    /* Remove conflicting width rules */
     flex: 1;
-    /* Grow to fill space */
     animation: nadarHaciaElFrente 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     transform-origin: center top;
     z-index: 10;
@@ -1312,76 +1158,36 @@ select:disabled {
     filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
 }
 
-.streak-counter {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 20;
-    width: 100%;
-    margin-top: 0;
-    /* Remove top margin */
-    margin-bottom: 20px;
-    flex-shrink: 0;
-    /* Prevent shrinking */
-}
-
-.streak-counter #streak-days {
-    font-family: 'Baloo 2', cursive;
-    font-size: clamp(5rem, 18vw, 9rem);
-    font-weight: 900;
-    color: #FFD700;
-    /* Vibrant Yellow */
-    line-height: 0.9;
-    letter-spacing: -2px;
-    text-transform: uppercase;
-    text-shadow:
-        3px 3px 0 #000,
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        0 5px 15px rgba(0, 0, 0, 0.4);
-    animation: count-pop 0.6s ease-out 1s both;
-    margin-bottom: 0;
-}
-
-.streak-counter .streak-label {
-    display: none;
-}
-
 .streak-message {
+    font-family: 'Baloo 2', cursive;
     font-size: clamp(2rem, 8vw, 4rem);
     font-weight: 900;
     color: #000000;
-    /* Black */
     background: transparent;
     padding: 0 10px;
-    /* Added padding */
     box-shadow: none;
     margin-top: 5px;
-    /* Added spacing */
     margin-bottom: 60px;
-    /* Lift text up */
     max-width: 100%;
     text-transform: uppercase;
-    /* No text shadow or white border requested, just thick black */
     animation: count-pop 0.6s ease-out 1.2s both;
     line-height: 0.9;
     flex-shrink: 0;
-    /* Prevent shrinking */
+}
+
+/* FIX: Replaced inline style manipulation with CSS class */
+.streak-message-long {
+    font-size: clamp(1.5rem, 6vw, 3rem);
 }
 
 .emoji-small {
     font-size: 0.5em;
-    /* Adjust relative size */
     vertical-align: middle;
 }
 
 .countdown-text {
     font-size: 1rem;
     color: #000;
-    /* Pure black for visibility */
     margin-top: auto;
     margin-bottom: 15px;
     font-weight: 700;
@@ -1391,60 +1197,11 @@ select:disabled {
 @media (min-width: 768px) {
     .streak-muela {
         max-width: 1000px;
-        /* Allow it to be huge on tablets */
         width: 100%;
     }
 }
 
-/* Panel de Pruebas Temporal */
-.test-panel {
-    margin: 20px auto 0;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px dashed rgba(0, 0, 0, 0.2);
-    border-radius: 15px;
-    font-size: 0.8rem;
-    color: var(--text-main);
-    text-align: center;
-    max-width: 320px;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.test-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 5px;
-    flex-wrap: wrap;
-}
-
-.test-buttons button {
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: white;
-    cursor: pointer;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.test-buttons button:hover {
-    background: #f0f0f0;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Toast Notification */
+/* ── Toast Notification ── */
 .toast {
     position: fixed;
     bottom: 20px;
@@ -1479,7 +1236,7 @@ select:disabled {
     border-left: 5px solid #e74c3c;
 }
 
-/* Fix for Action Screen text cutoff */
+/* ── Action Screen Fixes ── */
 #action-screen header {
     padding: 0 10px;
 }
@@ -1489,18 +1246,8 @@ select:disabled {
     font-weight: 700;
     line-height: 1.2;
     padding: 5px;
-    /* Remove ellipsis and nowrap */
     white-space: normal;
     overflow: visible;
     height: auto;
     min-height: auto;
-}
-
-/* Mejora de accesibilidad para botones en móvil */
-@media (max-width: 768px) {
-    .btn {
-        min-height: 54px;
-        font-size: 1.15rem;
-        padding: 12px 25px;
-    }
 }
