@@ -7,11 +7,11 @@ const ASSETS_TO_CACHE = [
     './guardian.js',
     './manifest.json',
     './img/pwa_icon.png',
-    './img/Fondo-marino 3.webp',
-    './img/image_34.webp',
-    './img/Muela de fuego-nivel 1.webp',
-    './img/Muela de fuego-nivel 2.webp',
-    './img/Muela de fuego-nivel 3.webp',
+    './img/Fondo-marino 3.jpeg',
+    './img/image_34.png.png',
+    './img/Muela de fuego-nivel 1.svg',
+    './img/Muela de fuego-nivel 2.svg',
+    './img/Muela de fuego-nivel 3.svg',
     './img/cropped-colegio-san-ramon-y-san-antonio-logo (2).png'
 ];
 

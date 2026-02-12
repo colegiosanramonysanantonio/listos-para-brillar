@@ -492,7 +492,7 @@ function showSuccessScreen(streak) {
     let level = 1;
     if (streak >= 4) level = 2;
     if (streak >= 11) level = 3;
-    DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.webp`;
+    DOM.text.streakMuela.src = `img/Muela de fuego-nivel ${level}.svg`;
 
     // Variable Timer Logic based on Course
     let seconds = 5;
