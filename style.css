@@ -367,22 +367,22 @@ header p {
 .name-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    max-height: 42vh;
+    gap: 6px;
+    max-height: 50vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding: 8px 4px;
+    padding: 6px 4px;
     border-radius: 15px;
     background: rgba(255, 255, 255, 0.4);
 }
 
 .name-btn {
-    padding: 12px 8px;
-    border-radius: 14px;
+    padding: 10px 6px;
+    border-radius: 12px;
     border: 2px solid rgba(255, 255, 255, 0.6);
     background: white;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--text-main);
     cursor: pointer;
@@ -390,7 +390,7 @@ header p {
     transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
     word-break: break-word;
-    line-height: 1.2;
+    line-height: 1.15;
 }
 
 .name-btn:hover {
@@ -423,13 +423,13 @@ header p {
 @media (min-width: 768px) {
     .name-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        max-height: 40vh;
+        gap: 8px;
+        max-height: 50vh;
     }
 
     .name-btn {
-        padding: 14px 10px;
-        font-size: 1.05rem;
+        padding: 11px 8px;
+        font-size: 0.95rem;
     }
 }
 
