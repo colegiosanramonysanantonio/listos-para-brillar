@@ -107,8 +107,9 @@ let currentLang = 'es';
 let studentData = null;
 let selectedStudent = { curso: '', grupo: '', nombre: '' };
 let currentStreakData = { value: 0, includesToday: false };
-let countdownInterval = null; // FIX: Scoped properly instead of window.countdownInterval
+let countdownInterval = null;
 let audioCtx = null;
+let streakRequestId = 0; // FIX: Counter to invalidate stale streak fetches
 
 // ── Wide-mode screens (Set for O(1) lookup instead of string comparison) ──
 const WIDE_SCREENS = new Set(['action', 'success', 'race', 'admin']);
@@ -301,6 +302,10 @@ function handleCursoChange(e) {
     const curso = e.target.value;
     const t = TRANSLATIONS[currentLang];
 
+    // Reset streak data when changing course (prevents stale data)
+    currentStreakData = { value: 0, includesToday: false };
+    streakRequestId++;
+
     DOM.inputs.grupo.innerHTML = `<option value="">${t.select_group}</option>`;
     DOM.inputs.alumno.innerHTML = `<option value="">${t.select_student}</option>`;
     DOM.inputs.grupo.disabled = true;
@@ -339,6 +344,10 @@ function handleGrupoChange(e) {
     const curso = DOM.inputs.curso.value;
     const t = TRANSLATIONS[currentLang];
 
+    // Reset streak data when changing group
+    currentStreakData = { value: 0, includesToday: false };
+    streakRequestId++;
+
     DOM.inputs.alumno.innerHTML = `<option value="">${t.select_student}</option>`;
     DOM.inputs.alumno.disabled = true;
     DOM.buttons.next.classList.add('hidden');
@@ -364,10 +373,21 @@ async function handleAlumnoChange(e) {
     selectedStudent.grupo = DOM.inputs.grupo.value;
     selectedStudent.nombre = e.target.value;
 
+    // Reset streak immediately so stale data never shows
+    currentStreakData = { value: 0, includesToday: false };
+
     if (selectedStudent.nombre) {
         DOM.buttons.next.classList.remove('hidden');
         DOM.buttons.next.disabled = false;
-        currentStreakData = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
+
+        // FIX: Race condition guard — only accept the latest fetch result
+        const thisRequest = ++streakRequestId;
+        const result = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
+
+        // If the user changed selection while we were fetching, discard this response
+        if (thisRequest === streakRequestId) {
+            currentStreakData = result;
+        }
     } else {
         DOM.buttons.next.classList.add('hidden');
         DOM.buttons.next.disabled = true;
