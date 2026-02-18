@@ -187,7 +187,7 @@ async function loadStudentData() {
         option.text = TRANSLATIONS[currentLang].loading;
         DOM.inputs.curso.add(option);
 
-        const response = await fetch(`${CONFIG.API_URL}?type=alumnado`);
+        const response = await fetch(`${CONFIG.API_URL}?type=alumnado&_t=${Date.now()}`);
         if (!response.ok) throw new Error('Network response was not ok');
 
         studentData = await response.json();
@@ -226,7 +226,7 @@ function populateCursos() {
 async function fetchStreak(curso, grupo, alumno) {
     if (!navigator.onLine) return { value: 0, includesToday: false };
     try {
-        const url = `${CONFIG.API_URL}?type=streak&curso=${encodeURIComponent(curso)}&grupo=${encodeURIComponent(grupo)}&alumno=${encodeURIComponent(alumno)}`;
+        const url = `${CONFIG.API_URL}?type=streak&curso=${encodeURIComponent(curso)}&grupo=${encodeURIComponent(grupo)}&alumno=${encodeURIComponent(alumno)}&_t=${Date.now()}`;
         const res = await fetch(url);
         const data = await res.json();
         return {
@@ -241,7 +241,7 @@ async function fetchStreak(curso, grupo, alumno) {
 async function loadRace() {
     DOM.raceContainer.innerHTML = `<div class="loading-race">${TRANSLATIONS[currentLang].race_loading}</div>`;
     try {
-        const res = await fetch(`${CONFIG.API_URL}?type=ranking`);
+        const res = await fetch(`${CONFIG.API_URL}?type=ranking&_t=${Date.now()}`);
         const ranking = await res.json();
 
         DOM.raceContainer.innerHTML = '';
