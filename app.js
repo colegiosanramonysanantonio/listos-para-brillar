@@ -110,6 +110,7 @@ let currentStreakData = { value: 0, includesToday: false };
 let countdownInterval = null;
 let audioCtx = null;
 let streakRequestId = 0; // FIX: Counter to invalidate stale streak fetches
+let streakFetchPromise = null; // FIX: Promise to track active streak fetch
 
 // ── Wide-mode screens (Set for O(1) lookup instead of string comparison) ──
 const WIDE_SCREENS = new Set(['action', 'success', 'race', 'admin']);
@@ -402,12 +403,14 @@ async function handleNameSelection(btn) {
 
         // FIX: Race condition guard — only accept the latest fetch result
         const thisRequest = ++streakRequestId;
-        const result = await fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre);
-
-        // If the user changed selection while we were fetching, discard this response
-        if (thisRequest === streakRequestId) {
-            currentStreakData = result;
-        }
+        streakFetchPromise = fetchStreak(selectedStudent.curso, selectedStudent.grupo, selectedStudent.nombre)
+            .then(result => {
+                // If the user changed selection while we were fetching, discard this response
+                if (thisRequest === streakRequestId) {
+                    currentStreakData = result;
+                }
+                return result;
+            });
     } else {
         DOM.buttons.next.classList.add('hidden');
         DOM.buttons.next.disabled = true;
@@ -445,7 +448,7 @@ function toggleCascade(el, show) {
 }
 
 // ── Registration Logic ──
-function handleRegister(estado) {
+async function handleRegister(estado) {
     if (DOM.buttons.yes.disabled) return;
     DOM.buttons.yes.disabled = true;
     DOM.buttons.no.disabled = true;
@@ -454,6 +457,16 @@ function handleRegister(estado) {
         DOM.buttons.yes.classList.add('btn-success-active');
         playSound('bling');
         confettiEffect();
+
+        // FIX: Wait for any pending streak fetch to complete before showing success
+        if (streakFetchPromise) {
+            const btnText = DOM.buttons.yes.querySelector('.text');
+            if (btnText) btnText.textContent = '...'; // Visual feedback
+            try {
+                await streakFetchPromise;
+            } catch (e) { console.error('Streak fetch error', e); }
+            if (btnText) btnText.textContent = TRANSLATIONS[currentLang].btn_yes;
+        }
 
         let displayStreak = currentStreakData.value;
         if (!currentStreakData.includesToday) displayStreak++;
