@@ -8,9 +8,9 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "img/image_34.png.png",
+      "src": "img/image_34.webp",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/webp"
     }
   ]
 }
