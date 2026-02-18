@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cepillos-v41';
+﻿const CACHE_NAME = 'cepillos-v42';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -8,10 +8,10 @@ const ASSETS_TO_CACHE = [
     './manifest.json',
     './img/pwa_icon.png',
     './img/Fondo-marino 3.jpeg',
-    './img/image_34.png.png',
-    './img/Muela de fuego-nivel 1.svg',
-    './img/Muela de fuego-nivel 2.svg',
-    './img/Muela de fuego-nivel 3.svg',
+    './img/image_34.webp',
+    './img/Muela de fuego-nivel 1.webp',
+    './img/Muela de fuego-nivel 2.webp',
+    './img/Muela de fuego-nivel 3.webp',
     './img/cropped-colegio-san-ramon-y-san-antonio-logo (2).png'
 ];
 
