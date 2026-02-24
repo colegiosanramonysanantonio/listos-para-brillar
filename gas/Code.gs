@@ -79,7 +79,7 @@ function getStats(ss) {
   for (let i = 1; i < data.length; i++) {
      const fecha = data[i][0]; // Fecha cadena yyyy-MM-dd ? O objeto Date?
      let fechaStr = fecha;
-     if (feat instanceof Date) {
+     if (fecha instanceof Date) {
         fechaStr = Utilities.formatDate(fecha, ss.getSpreadsheetTimeZone(), "yyyy-MM-dd");
      }
      
@@ -226,6 +226,54 @@ function getStreak(ss, curso, grupo, alumno) {
           streak++;
       } else {
           break;
+      }
+  }
+
+  // FIX: Ghost Streak Validation
+  if (streak > 0 && ultimoDiaMarcado < diaHoy) {
+      for (let dayGap = ultimoDiaMarcado + 1; dayGap < diaHoy; dayGap++) {
+          const fechaGap = new Date(hoySs.getFullYear(), hoySs.getMonth(), dayGap, 12, 0, 0);
+          const isoGap = Utilities.formatDate(fechaGap, timezone, "yyyy-MM-dd");
+          const diaSemGap = fechaGap.getDay();
+          
+          const festivos = [
+            '2025-10-13', '2025-11-01', '2025-11-03', '2025-12-06', '2025-12-08',
+            '2026-02-27', '2026-03-02', '2026-05-01', '2026-05-02', '2026-05-15'
+          ];
+          const esNavidad = (isoGap >= '2025-12-20' && isoGap <= '2026-01-07');
+          const esSemanaSanta = (isoGap >= '2026-03-27' && isoGap <= '2026-04-06');
+          const esFinDeSemana = (diaSemGap === 0 || diaSemGap === 6);
+          const esDiaProtegido = esFinDeSemana || festivos.includes(isoGap) || esNavidad || esSemanaSanta;
+          
+          if (!esDiaProtegido) {
+              streak = 0; 
+              break;
+          }
+      }
+  }
+
+  // FIX: Ghost Streak Validation
+  // If we found a streak but there's a gap between today and the last check,
+  // we must ensure ALL days in that gap are protected.
+  if (streak > 0 && ultimoDiaMarcado < diaHoy) {
+      for (let dayGap = ultimoDiaMarcado + 1; dayGap < diaHoy; dayGap++) {
+          const fechaGap = new Date(hoySs.getFullYear(), hoySs.getMonth(), dayGap, 12, 0, 0);
+          const isoGap = Utilities.formatDate(fechaGap, timezone, "yyyy-MM-dd");
+          const diaSemGap = fechaGap.getDay();
+          
+          const festivos = [
+            '2025-10-13', '2025-11-01', '2025-11-03', '2025-12-06', '2025-12-08',
+            '2026-02-27', '2026-03-02', '2026-05-01', '2026-05-02', '2026-05-15'
+          ];
+          const esNavidad = (isoGap >= '2025-12-20' && isoGap <= '2026-01-07');
+          const esSemanaSanta = (isoGap >= '2026-03-27' && isoGap <= '2026-04-06');
+          const esFinDeSemana = (diaSemGap === 0 || diaSemGap === 6);
+          const esDiaProtegido = esFinDeSemana || festivos.includes(isoGap) || esNavidad || esSemanaSanta;
+          
+          if (!esDiaProtegido) {
+              streak = 0; // Broken streak!
+              break;
+          }
       }
   }
 
